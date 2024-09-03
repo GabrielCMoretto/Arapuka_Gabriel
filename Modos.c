@@ -12,7 +12,27 @@
 #include "Gps.h"
 #include "Gprs.h"
 #include "Strings.h"
+// 1 -Operacao
+char modo_1   (char modo) {
+    char qtd,argc[4],argv[10];
+    modo_ser1(modo);
+    ser1_str(" Puka-Operacao (digite x para sair)\n");
+    lcdb_str(1,1,"Opera");
+    led_vm();
+    led_vd();
+    while(TRUE){
+        qtd=seri_cmdo(argc,argv,10);
+        if(qtd>0){
+            if (argv[0]=='X' || argv[0]=='x'){
+                led_vm();
+                led_vd();
+                return modo;
+            }
 
+        }
+    }
+    return modo;
+}
 // 20 - SIM800L - sim800l
 char modo_20  (char modo) {
     char x;
@@ -46,6 +66,10 @@ char modo_20  (char modo) {
 char modo_19  (char modo) {
     char x;
     char vet[128];
+    int i=0;
+    for(i=0;i<128;i++){
+        vet[i]=0;
+    }
     vet[0]=0;
     modo_ser1(modo);
     ser1_str(": GPRS Menssagem(SIM800L)\n");
@@ -54,26 +78,25 @@ char modo_19  (char modo) {
     seri_config();  //Inicializar fila que recebe do PC
     gprs_config();  //Inicializar fila que recebe do SIM800L
     __delay_cycles(1000); //Esperar serial estabilizar
+    i=0;
     while(TRUE){
 
         rec_msg(vet,127);  //Esperar comando
         if (vet[0] != 0){
-            //gprs_send_msg(vet,x);
-            gprs_send_cmd("AT+CMGF=1",x);
-            gprs_send_cmd("AT+CMGS=\"+5521979592145\"",x);
-            gprs_str(vet);
-            delay_10ms(100);
-            gprs_char(0x1A);
-            gprs_char(0x0D);
-            gprs_char(0x0A);
-            while (gprs_tira(&x)==TRUE){
-               ser1_char(x);
-            }
-            vet[0]=0;
+            gprs_send_msg(vet,x);
+            for(i=0;i<128;i++){
+                    vet[i]=0;
+                    //gprs_fila[i]=0;
+                    seri_fila[i]=0;
+                }
+
+            //gprs_config();
         }
+        delay_10ms(100);
         if (gprs_tira(&x)==TRUE){
             ser1_char(x);
         }
+
     }
     return modo;
 }
@@ -439,7 +462,7 @@ char modo_gprmc (char modo) {
 
 
 char modo_0   (char modo) { modo_ser1(modo); return modo;}
-char modo_1   (char modo) { modo_ser1(modo); return modo;}
+//char modo_1   (char modo) { modo_ser1(modo); return modo;}
 char modo_2   (char modo) { modo_ser1(modo); return modo;}
 char modo_3   (char modo) { modo_ser1(modo); return modo;}
 char modo_4   (char modo) { modo_ser1(modo); return modo;}

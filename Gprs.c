@@ -25,31 +25,38 @@ void gprs_char(char x){
     while( (UCA0IFG&UCTXIFG) == 0);
 }
 // comando que envia um comando pro gprs
-void gprs_send_cmd(char *msg, char x){
+void gprs_send_cmd(char *vet, char x){
     ser1_str("\n[");
-    ser1_str(msg);
+    ser1_str(vet);
     ser1_str("]\n");
-    gprs_str(msg);
+    gprs_str(vet);
+    delay_10ms(1);
     gprs_char(0x0D);
+    delay_10ms(1);
     gprs_char(0x0A);
-    delay_10ms(100);
-    while (gprs_tira(&x)==TRUE){
-        ser1_char(x);
-    }
+    delay_10ms(1);
+    //while (gprs_tira(&x)==TRUE){
+    //    ser1_char(x);
+    //}
 }
 // comando que envia menssagem para um celular
-void gprs_send_msg(char *msg, char x){
+void gprs_send_msg(char *vet, char x){
+    gprs_config();
     gprs_send_cmd("AT+CMGF=1",x);
     gprs_send_cmd("AT+CMGS=\"+5521979592145\"",x);
-    gprs_str(msg);
+    gprs_str(vet);
     delay_10ms(100);
-    gprs_char(0x1A);
-    gprs_char(0x0D);
     gprs_char(0x0A);
+    delay_10ms(1);
+    gprs_char(0x1A);
+    delay_10ms(1);
+    gprs_char(0x0D);
+    delay_10ms(1);
+
     while (gprs_tira(&x)==TRUE){
         ser1_char(x);
     }
-    msg[0]=0;
+
 }
 
 ////////////////////////////////////////////////////
