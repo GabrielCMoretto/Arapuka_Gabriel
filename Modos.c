@@ -13,28 +13,197 @@
 #include "Gprs.h"
 #include "Strings.h"
 // 1 -Operacao
-char modo_1   (char modo) {
-    char qtd,argc[4],argv[10];
+char modo_1(char modo)
+{
+    int maiorx = 0, menorx = 0, maiory = 0, menory = 0, maiorz = 0, menorz = 0;
+    int roubado, alerta = 0;
+    char vetor[14];
+    char x;
+    int ax, ay, az, tp, gx, gy, gz;
+
+    x = i2c_teste_adr(MPU_ADR);
+    if (x == TRUE)
+        ser1_str(" MPU OK");
+    else
+    {
+        ser1_str(" MPU NOK");
+        return modo;
+    }
+    ser1_crlf(1);
+    roubado = 0;
+
+    mpu_rd_vet(ACCEL_XOUT_H, vetor, 14);    //Ler 14 regs
+    ax = vetor[0];
+    ax = (ax << 8) + vetor[1];
+    ay = vetor[2];
+    ay = (ay << 8) + vetor[3];
+    az = vetor[4];
+    az = (az << 8) + vetor[5];
+    tp = vetor[6];
+    tp = (tp << 8) + vetor[7];
+    gx = vetor[8];
+    gx = (gx << 8) + vetor[9];
+    gy = vetor[10];
+    gy = (gy << 8) + vetor[11];
+    gz = vetor[12];
+    gz = (gz << 8) + vetor[13];
+
+    //Variaveis: X- 136 , Y- 88 , Z - 17
+    maiorx = gx + 136;
+    menorx = gx - 136;
+
+    maiory = gy + 88;
+    menory = gy - 88;
+
+    maiorz = gz + 17;
+    menorz = gz - 17;
+
+    char letra = 0, base = 0;
+    char serialMSG = TRUE;
+    char lin, col;
+    char qtd, argc[4], argv[10];
     modo_ser1(modo);
+    char  i, j, y;
     ser1_str(" Puka-Operacao (digite x para sair)\n");
-    lcdb_str(1,1,"Opera");
+    lcdb_str(1, 1, "Opera");
     led_vm();
     led_vd();
-    while(TRUE){
-        qtd=seri_cmdo(argc,argv,10);
-        if(qtd>0){
-            if (argv[0]=='X' || argv[0]=='x'){
-                led_vm();
-                led_vd();
-                return modo;
-            }
+    ser0_config(BR_9600);
+    seri_config();  //Inicializar fila que recebe do PC
+    gprs_config();  //Inicializar fila que recebe do SIM800L
+    //gps_config(); //esse gps fica com a fila cheia o tempo todo
 
+    char vt[16];
+    char estado = DMT;
+    long wr_adr = 0;  //Endere√ßo para as escritas
+    long rd_adr = 0;  //Endere√ßo para as leituras
+    long er_adr = 0;  //Endere√ßo para apagar
+    y = wq_sr1_rd();
+    ser1_hex8(y);
+    y = wq_sr2_rd();
+    ser1_hex8(y);
+
+    ser1_crlf(1);
+    w25_manuf_dev_id(vt);
+    ser1_hex8(vt[0]);
+    ser1_spc(1);
+    ser1_hex8(vt[1]);
+    ser1_crlf(1);
+
+    while (TRUE)
+    {
+        switch (estado)
+        {
+
+        case DMT:
+            if (serialMSG)
+            {
+                ser1_str("Estado:Dormente\n");
+                serialMSG = FALSE;
+            }
+            estado = VIG;
+            serialMSG = TRUE;
+            break;
+        case VIG:
+            if (serialMSG)
+            {
+                ser1_str("Estado:Vigilia\n");
+                serialMSG = FALSE;
+            }
+            mpu_rd_vet(ACCEL_XOUT_H, vetor, 14);    //Ler 14 regs
+            ax = vetor[0];
+            ax = (ax << 8) + vetor[1];
+            ay = vetor[2];
+            ay = (ay << 8) + vetor[3];
+            az = vetor[4];
+            az = (az << 8) + vetor[5];
+            tp = vetor[6];
+            tp = (tp << 8) + vetor[7];
+            gx = vetor[8];
+            gx = (gx << 8) + vetor[9];
+            gy = vetor[10];
+            gy = (gy << 8) + vetor[11];
+            gz = vetor[12];
+            gz = (gz << 8) + vetor[13];
+
+            if (gx < menorx || gx > maiorx)
+                alerta++;
+            else if (gy < menory || gy > maiory)
+                alerta++;
+            else if (gz < menorz || gz > maiorz)
+                alerta++;
+            else
+                alerta = 0;
+
+            ser1_str("Alerta: ");
+            ser1_dec16(alerta);
+            ser1_crlf(1);
+
+            ser1_str("Gx: ");
+            ser1_dec16(gx);
+            ser1_crlf(1);
+
+            ser1_str("Gy: ");
+            ser1_dec16(gy);
+            ser1_crlf(1);
+
+            ser1_str("Gz: ");
+            ser1_dec16(gz);
+            ser1_crlf(1);
+
+            if (alerta > 4)
+            {
+                roubado = 1;
+                lcdb_apaga();
+                ser1_str("Dispositivo entrando no modo suspeito!");
+                ser1_crlf(1);
+                delay_10ms(400);
+                estado = SUS;
+                serialMSG = TRUE;
+            }
+            delay_10ms(100);
+
+            break;
+        case SUS:
+            if (serialMSG)
+            {
+                ser1_str("Estado:Suspeito\n");
+                serialMSG = FALSE;
+            }
+            break;
+        case ALT1:
+            if (serialMSG)
+            {
+                ser1_str("Estado:Alerta 1\n");
+                serialMSG = FALSE;
+            }
+            break;
+        case ALT2:
+            if (serialMSG)
+            {
+                ser1_str("Estado:Alerta 1\n");
+                serialMSG = FALSE;
+            }
+            break;
+        default:
         }
+//        if (gps_tira(&x) == TRUE)
+//        {
+//            //ser1_char(x);
+//        }
+//        if (gps_gprmc_novo == TRUE)
+//        {
+//            send_gps_gprs();
+//            break;
+//        }
+
     }
+    TA0CTL = 0;   //Parar o timer, desligar a serial do GPS
     return modo;
 }
 // 20 - SIM800L - sim800l
-char modo_20  (char modo) {
+char modo_20(char modo)
+{
     char x;
     modo_ser1(modo);
     ser1_str(":Comandos AT para configurar SIM800L($=0x1A)\n");
@@ -43,16 +212,19 @@ char modo_20  (char modo) {
     seri_config();  //Inicializar fila que recebe do PC
     gprs_config();  //Inicializar fila que recebe do SIM800L
     __delay_cycles(1000); //Esperar serial estabilizar
-    gprs_str("AT");
-    gprs_char(0x0D);
-    gprs_char(0x0A);
-    while(TRUE){
-        if (seri_tira(&x)==TRUE){
-            if(x=='$')
-                x=0x1A;
+    //gprs_str("AT");
+    //gprs_char(0x0D);
+    //gprs_char(0x0A);
+    while (TRUE)
+    {
+        if (seri_tira(&x) == TRUE)
+        {
+            if (x == '$')
+                x = 0x1A;
             gprs_char(x);
         }
-        if (gprs_tira(&x)==TRUE){
+        if (gprs_tira(&x) == TRUE)
+        {
             ser1_char(x);
         }
     }
@@ -62,15 +234,17 @@ char modo_20  (char modo) {
 // 19 - SIM800L - Menssagens para um numero de telefone
 // Tudo que chegar pela USCI_A1 vai para o USCI_A0
 // Tudo que chegar pela USCI_A0 vai para o USCI_A1
-// SÛ sai com RESET
-char modo_19  (char modo) {
+// S√≥ sai com RESET
+char modo_19(char modo)
+{
     char x;
     char vet[128];
-    int i=0;
-    for(i=0;i<128;i++){
-        vet[i]=0;
+    int i = 0;
+    for (i = 0; i < 128; i++)
+    {
+        vet[i] = 0;
     }
-    vet[0]=0;
+    vet[0] = 0;
     modo_ser1(modo);
     ser1_str(": GPRS Menssagem(SIM800L)\n");
     ser0_config(BR_9600);
@@ -78,22 +252,23 @@ char modo_19  (char modo) {
     seri_config();  //Inicializar fila que recebe do PC
     gprs_config();  //Inicializar fila que recebe do SIM800L
     __delay_cycles(1000); //Esperar serial estabilizar
-    i=0;
-    while(TRUE){
+    i = 0;
+    while (TRUE)
+    {
 
-        rec_msg(vet,127);  //Esperar comando
-        if (vet[0] != 0){
-            gprs_send_msg(vet,x);
-            for(i=0;i<128;i++){
-                    vet[i]=0;
-                    //gprs_fila[i]=0;
-                    seri_fila[i]=0;
-                }
-
-            //gprs_config();
+        rec_msg(vet, 127);  //Esperar comando
+        if (vet[0] != 0)
+        {
+            gprs_send_msg(vet, x);
+            for (i = 0; i < 128; i++)
+            {  //limpar o vetor para nao sobrar lixo
+                vet[i] = 0;
+                seri_fila[i] = 0;
+            }
         }
         delay_10ms(100);
-        if (gprs_tira(&x)==TRUE){
+        if (gprs_tira(&x) == TRUE)
+        {
             ser1_char(x);
         }
 
@@ -101,20 +276,23 @@ char modo_19  (char modo) {
     return modo;
 }
 
-
 //09 - FLASH - Flash
-char modo_9   (char modo) {
+char modo_9(char modo)
+{
     char x;
-    char qtd,argc[4], argv[15]; //Receber comandos
+    char qtd, argc[4], argv[15]; //Receber comandos
     modo_ser1(modo);
     ser1_str(": GPRS\n");
     ser0_config(BR_9600);
     //ser0_config(BR_19200);
     delay_10ms(10);
 
-    while(TRUE){
-        if ((qtd=seri_cmdo(argc,argv,15))!=0){
-            if (argv[0]=='x' || argv[0]=='X') return modo;
+    while (TRUE)
+    {
+        if ((qtd = seri_cmdo(argc, argv, 15)) != 0)
+        {
+            if (argv[0] == 'x' || argv[0] == 'X')
+                return modo;
             gprs_str(argv);
             gprs_char(CR);
             gprs_char(LF);
@@ -123,41 +301,49 @@ char modo_9   (char modo) {
             ser1_str("] ==> ");
         }
 
-        if (gprs_tira(&x)==TRUE){
+        if (gprs_tira(&x) == TRUE)
+        {
             ser1_char(x);
         }
     }
     return modo;
 }
 
-
-
 //10 - SW - Testar as chaves
-char modo_sw  (char modo) {
+char modo_sw(char modo)
+{
     char sw1_ct, sw2_ct;    //Contar acionamentos das chaves
-    sw1=sw2=FALSE;          //Cancelar acionamentos anteriores
+    sw1 = sw2 = FALSE;          //Cancelar acionamentos anteriores
     modo_ser1(modo);
     ser1_str(" Testar SW\n");
-    lcdb_str(1,1,"SW");
-    lcdb_str(2,1,"SW1=A  SW2=A");
-    sw1_ct=sw2_ct=0;
+    lcdb_str(1, 1, "SW");
+    lcdb_str(2, 1, "SW1=A  SW2=A");
+    sw1_ct = sw2_ct = 0;
     seri_config();    //Apagar fila de entrada
-    ser1_str("SW1=");        ser1_dec8u(sw1_ct);
-    ser1_str("  SW2=");      ser1_dec8u(sw2_ct);
+    ser1_str("SW1=");
+    ser1_dec8u(sw1_ct);
+    ser1_str("  SW2=");
+    ser1_dec8u(sw2_ct);
     ser1_crlf(1);
 
+    while (TRUE)
+    {
+        if (seri_cmdo_x() == TRUE)
+            return modo;
 
-    while(TRUE){
-        if (seri_cmdo_x()==TRUE)    return modo;
-
-        if (sw1_estado==ABERTA)  lcdb_char(2,5,'A');
-        else                     lcdb_char(2,5,'F');
-        if (sw2_estado==ABERTA)  lcdb_char(2,12,'A');
-        else                     lcdb_char(2,12,'F');
+        if (sw1_estado == ABERTA)
+            lcdb_char(2, 5, 'A');
+        else
+            lcdb_char(2, 5, 'F');
+        if (sw2_estado == ABERTA)
+            lcdb_char(2, 12, 'A');
+        else
+            lcdb_char(2, 12, 'F');
 
         // SW1
-        if (sw1==TRUE){
-            sw1=FALSE;
+        if (sw1 == TRUE)
+        {
+            sw1 = FALSE;
             sw1_ct++;
             ser1_str("SW1=");
             ser1_dec8u(sw1_ct);
@@ -165,8 +351,9 @@ char modo_sw  (char modo) {
         }
 
         //SW2
-        if (sw2==TRUE){
-            sw2=FALSE;
+        if (sw2 == TRUE)
+        {
+            sw2 = FALSE;
             sw2_ct++;
             ser1_str("SW2=");
             ser1_dec8u(sw2_ct);
@@ -179,45 +366,60 @@ char modo_sw  (char modo) {
 //11 - LEDs
 // Testar Leds
 // Digitar: VM, vn, Vm, VD, vd, Vd
-char modo_leds  (char modo) {
-    char qtd,argc[4],argv[10];
+char modo_leds(char modo)
+{
+    char qtd, argc[4], argv[10];
     modo_ser1(modo);
     ser1_str(" Testar LEDs\n");
-    lcdb_str(1,1,"Leds");
+    lcdb_str(1, 1, "Leds");
     led_vm();
     led_vd();
-    while(TRUE){
-        qtd=seri_cmdo(argc,argv,10);
-        if(qtd>0){
-            if (argv[0]=='X' || argv[0]=='x'){
+    while (TRUE)
+    {
+        qtd = seri_cmdo(argc, argv, 10);
+        if (qtd > 0)
+        {
+            if (argv[0] == 'X' || argv[0] == 'x')
+            {
                 led_vm();
                 led_vd();
                 return modo;
             }
-            if      (str_cmp(&argv[0], "VM")) led_VM();
-            else if (str_cmp(&argv[0], "vm")) led_vm();
-            else if (str_cmp(&argv[0], "Vm")) led_Vm();
-            else if (str_cmp(&argv[0], "VD")) led_VD();
-            else if (str_cmp(&argv[0], "vd")) led_vd();
-            else if (str_cmp(&argv[0], "Vd")) led_Vd();
-            else                             ser1_char('?');
+            if (str_cmp(&argv[0], "VM"))
+                led_VM();
+            else if (str_cmp(&argv[0], "vm"))
+                led_vm();
+            else if (str_cmp(&argv[0], "Vm"))
+                led_Vm();
+            else if (str_cmp(&argv[0], "VD"))
+                led_VD();
+            else if (str_cmp(&argv[0], "vd"))
+                led_vd();
+            else if (str_cmp(&argv[0], "Vd"))
+                led_Vd();
+            else
+                ser1_char('?');
         }
     }
     return modo;
 }
 
-
 //12 - LCD
-char modo_lcd  (char modo){
-    char letra=0,base=0;
-    char lin,col;
+char modo_lcd(char modo)
+{
+    char letra = 0, base = 0;
+    char lin, col;
     modo_ser1(modo);
-    while(TRUE){
-        if (seri_cmdo_x()==TRUE)    return modo;
-        for (lin=1; lin<3; lin++){
-            for(col=1; col<17; col ++){
-                letra=base+(lin-1)*16+(col-1);
-                lcdb_char(lin,col,letra);
+    while (TRUE)
+    {
+        if (seri_cmdo_x() == TRUE)
+            return modo;
+        for (lin = 1; lin < 3; lin++)
+        {
+            for (col = 1; col < 17; col++)
+            {
+                letra = base + (lin - 1) * 16 + (col - 1);
+                lcdb_char(lin, col, letra);
             }
         }
         delay_10ms(50);
@@ -227,79 +429,103 @@ char modo_lcd  (char modo){
 }
 
 //13 - LCD
-char modo_mpu  (char modo) {
+char modo_mpu(char modo)
+{
     char x;
     char vetor[14];
-    int ax,ay,az,tp,gx,gy,gz;
+    int ax, ay, az, tp, gx, gy, gz;
     modo_ser1(modo);
     ser1_str(" MPU =");
-    lcdb_str(1,1,"MPU");
+    lcdb_str(1, 1, "MPU");
 
-    x=i2c_teste_adr(MPU_ADR);
-    if (x==TRUE)    ser1_str(" OK");
-    else{
+    x = i2c_teste_adr(MPU_ADR);
+    if (x == TRUE)
+        ser1_str(" OK");
+    else
+    {
         ser1_str(" NOK");
         return modo;
     }
     ser1_crlf(1);
-    while(TRUE){
-        if (seri_cmdo_x()==TRUE)    return modo;
+    while (TRUE)
+    {
+        if (seri_cmdo_x() == TRUE)
+            return modo;
         mpu_rd_vet(ACCEL_XOUT_H, vetor, 14);    //Ler 14 regs
-        ax=vetor[ 0];    ax=(ax<<8)+vetor[ 1];
-        ay=vetor[ 2];    ay=(ay<<8)+vetor[ 3];
-        az=vetor[ 4];    az=(az<<8)+vetor[ 5];
-        tp=vetor[ 6];    tp=(tp<<8)+vetor[ 7];
-        gx=vetor[ 8];    gx=(gx<<8)+vetor[ 9];
-        gy=vetor[10];    gy=(gy<<8)+vetor[11];
-        gz=vetor[12];    gz=(gz<<8)+vetor[13];
-        ser1_dec16(ax); ser1_spc(1);
-        ser1_dec16(ay); ser1_spc(1);
-        ser1_dec16(az); ser1_spc(3);
-        ser1_dec16(gx); ser1_spc(1);
-        ser1_dec16(gy); ser1_spc(1);
-        ser1_dec16(gz); ser1_spc(1);
+        ax = vetor[0];
+        ax = (ax << 8) + vetor[1];
+        ay = vetor[2];
+        ay = (ay << 8) + vetor[3];
+        az = vetor[4];
+        az = (az << 8) + vetor[5];
+        tp = vetor[6];
+        tp = (tp << 8) + vetor[7];
+        gx = vetor[8];
+        gx = (gx << 8) + vetor[9];
+        gy = vetor[10];
+        gy = (gy << 8) + vetor[11];
+        gz = vetor[12];
+        gz = (gz << 8) + vetor[13];
+        ser1_dec16(ax);
+        ser1_spc(1);
+        ser1_dec16(ay);
+        ser1_spc(1);
+        ser1_dec16(az);
+        ser1_spc(3);
+        ser1_dec16(gx);
+        ser1_spc(1);
+        ser1_dec16(gy);
+        ser1_spc(1);
+        ser1_dec16(gz);
+        ser1_spc(1);
         ser1_crlf(1);
-        lcdb_hex16(1,1, ax);
-        lcdb_hex16(1,6, ay);
-        lcdb_hex16(1,11,az);
-        lcdb_hex16(2,1, gx);
-        lcdb_hex16(2,6, gy);
-        lcdb_hex16(2,11,gz);
+        lcdb_hex16(1, 1, ax);
+        lcdb_hex16(1, 6, ay);
+        lcdb_hex16(1, 11, az);
+        lcdb_hex16(2, 1, gx);
+        lcdb_hex16(2, 6, gy);
+        lcdb_hex16(2, 11, gz);
         delay_10ms(100);
     }
     return modo;
 }
 
 //14 - RTC - Testar o RTC
-char modo_rtc  (char modo) {
-    char qtd,argc[4], argv[15]; //Receber comandos
+char modo_rtc(char modo)
+{
+    char qtd, argc[4], argv[15]; //Receber comandos
     char vetor[7];
     modo_ser1(modo);
     ser1_str(" Testar RTC\n");
-    lcdb_str(1,1,"RTC");
-    while(TRUE){
-        qtd=seri_cmdo(argc,argv,15);  //Esperar comando
-        if (qtd!=0){
+    lcdb_str(1, 1, "RTC");
+    while (TRUE)
+    {
+        qtd = seri_cmdo(argc, argv, 15);  //Esperar comando
+        if (qtd != 0)
+        {
             ser1_str("Chegou: ");
             ser1_str(&argv[0]);
             ser1_crlf(1);
 
-            if (argv[0]=='x' || argv[0]=='X')   return modo;
+            if (argv[0] == 'x' || argv[0] == 'X')
+                return modo;
 
             // Hora (hh:mm:ss)
-            if (argv[2] == ':' && argv[5]==':'){
-              vetor[2]=16*(argv[0]-0x30)+(argv[1]-0x30);  //Segundos
-              vetor[1]=16*(argv[3]-0x30)+(argv[4]-0x30);  //Minutos
-              vetor[0]=16*(argv[6]-0x30)+(argv[7]-0x30);  //Horas
-              rtc_wr_vet(0,vetor,3);
+            if (argv[2] == ':' && argv[5] == ':')
+            {
+                vetor[2] = 16 * (argv[0] - 0x30) + (argv[1] - 0x30); //Segundos
+                vetor[1] = 16 * (argv[3] - 0x30) + (argv[4] - 0x30); //Minutos
+                vetor[0] = 16 * (argv[6] - 0x30) + (argv[7] - 0x30); //Horas
+                rtc_wr_vet(0, vetor, 3);
             }
 
             //Data (dd/mm/aa)
-            if (argv[2] == '/' && argv[5]=='/'){
-              vetor[0]=16*(argv[0]-0x30)+(argv[1]-0x30);  //Dia
-              vetor[1]=16*(argv[3]-0x30)+(argv[4]-0x30);  //MÍs
-              vetor[2]=16*(argv[6]-0x30)+(argv[7]-0x30);  //Ano
-              rtc_wr_vet(4,vetor,3);
+            if (argv[2] == '/' && argv[5] == '/')
+            {
+                vetor[0] = 16 * (argv[0] - 0x30) + (argv[1] - 0x30); //Dia
+                vetor[1] = 16 * (argv[3] - 0x30) + (argv[4] - 0x30); //M√™s
+                vetor[2] = 16 * (argv[6] - 0x30) + (argv[7] - 0x30); //Ano
+                rtc_wr_vet(4, vetor, 3);
             }
 
         }
@@ -307,8 +533,8 @@ char modo_rtc  (char modo) {
         rtc_rd_vet(0, vetor, 7);
         ser1_data_hora(vetor);
         ser1_crlf(1);
-        lcdb_data(1,9,vetor);
-        lcdb_hora(2,9,vetor);
+        lcdb_data(1, 9, vetor);
+        lcdb_hora(2, 9, vetor);
         //ser1_hex8(x);
         //ser1_crlf(1);
         delay_10ms(100);
@@ -317,21 +543,22 @@ char modo_rtc  (char modo) {
 }
 
 //15 -WQ- Testar memo Flash
-char modo_wq (char modo) {
-    char qtd,argc[4], argv[15]; //Receber comandos
-    char x,i,j;
+char modo_wq(char modo)
+{
+    char qtd, argc[4], argv[15]; //Receber comandos
+    char x, i, j;
     char vt[16];
-    long wr_adr=0;  //EndereÁo para as escritas
-    long rd_adr=0;  //EndereÁo para as leituras
-    long er_adr=0;  //EndereÁo para apagar
+    long wr_adr = 0;  //Endere√ßo para as escritas
+    long rd_adr = 0;  //Endere√ßo para as leituras
+    long er_adr = 0;  //Endere√ßo para apagar
     modo_ser1(modo);
     ser1_str(" Testar Flash\n");
-    lcdb_str(1,1,"WQ");
-    x=wq_sr1_rd();
+    lcdb_str(1, 1, "WQ");
+    x = wq_sr1_rd();
     ser1_str("SR1 = ");
     ser1_hex8(x);
 
-    x=wq_sr2_rd();
+    x = wq_sr2_rd();
     ser1_str("  SR2 = ");
     ser1_hex8(x);
     ser1_crlf(1);
@@ -343,59 +570,70 @@ char modo_wq (char modo) {
     ser1_hex8(vt[1]);
     ser1_crlf(1);
 
-    while(TRUE){
-        qtd=0;
-        while (qtd==0)  qtd=seri_cmdo(argc,argv,15);  //Esperar comando
-        if (argv[0]=='x' || argv[0]=='X') return modo;
+    while (TRUE)
+    {
+        qtd = 0;
+        while (qtd == 0)
+            qtd = seri_cmdo(argc, argv, 15);  //Esperar comando
+        if (argv[0] == 'x' || argv[0] == 'X')
+            return modo;
 
         //Leitura 256 bytes da Flash
-        if (argv[0]=='r' || argv[0]=='R'){
-            if (qtd>1){
-                rd_adr=str_2_num(&argv[argc[1]]);
-                rd_adr &= 0xFFFFFF0;        //EndereÁo m˙ltiplo de 16
+        if (argv[0] == 'r' || argv[0] == 'R')
+        {
+            if (qtd > 1)
+            {
+                rd_adr = str_2_num(&argv[argc[1]]);
+                rd_adr &= 0xFFFFFF0;        //Endere√ßo m√∫ltiplo de 16
             }
             ser1_str("RD ");
             ser1_hex32(rd_adr);
             ser1_crlf(1);
 
-            for (i=0; i<16; i++){
-                wq_rd_blk(rd_adr, vt,16);
+            for (i = 0; i < 16; i++)
+            {
+                wq_rd_blk(rd_adr, vt, 16);
                 ser1_hex32(rd_adr);
                 ser1_char(':');
                 ser1_spc(1);
                 ser1_linha(vt);
-                rd_adr+=16;
+                rd_adr += 16;
             }
             ser1_crlf(1);
         }
 
-        // WR - Escrita de um padr„o de 256 bytes, opera em blocos de 16 bytes
-        if (argv[0]=='w' || argv[0]=='W'){
-            if (qtd>1){
-                wr_adr=str_2_num(&argv[argc[1]]);
-                wr_adr &= 0xFFFFFF0;        //EndereÁo m˙ltiplo de 16
+        // WR - Escrita de um padr√£o de 256 bytes, opera em blocos de 16 bytes
+        if (argv[0] == 'w' || argv[0] == 'W')
+        {
+            if (qtd > 1)
+            {
+                wr_adr = str_2_num(&argv[argc[1]]);
+                wr_adr &= 0xFFFFFF0;        //Endere√ßo m√∫ltiplo de 16
             }
             ser1_str("WR ");
             ser1_hex32(wr_adr);
             ser1_crlf(1);
-            x=0;
-            for (i=0; i<16; i++){
-                for (j=0; j<16; j++)
-                    vt[j]=j+x;
+            x = 0;
+            for (i = 0; i < 16; i++)
+            {
+                for (j = 0; j < 16; j++)
+                    vt[j] = j + x;
 
-                wq_wr_blk(wr_adr, vt,16);
-                wr_adr+=16;
-                x+=16;
+                wq_wr_blk(wr_adr, vt, 16);
+                wr_adr += 16;
+                x += 16;
             }
             ser1_str("OK");
             ser1_crlf(1);
         }
 
-        // Erase - Apagar p·gina de 4 KB (adr = aaaa aaaa   aaaa 0000   0000 0000)
-        if (argv[0]=='e' || argv[0]=='E'){
-            if (qtd>1){
-                er_adr=str_2_num(&argv[argc[1]]);
-                wr_adr &= 0xFFF000;        //EndereÁo m˙ltiplo de 4 KB
+        // Erase - Apagar p√°gina de 4 KB (adr = aaaa aaaa   aaaa 0000   0000 0000)
+        if (argv[0] == 'e' || argv[0] == 'E')
+        {
+            if (qtd > 1)
+            {
+                er_adr = str_2_num(&argv[argc[1]]);
+                wr_adr &= 0xFFF000;        //Endere√ßo m√∫ltiplo de 4 KB
             }
             ser1_str("Erase 4K: ");
             ser1_hex32(er_adr);
@@ -409,74 +647,285 @@ char modo_wq (char modo) {
 
 //16 -GPS- Testar GPS
 // Usa TA0
-char modo_gps  (char modo) {
+char modo_gps(char modo)
+{
     char x;
     gps_config();
     modo_ser1(modo);
     ser1_str(" Testar GPS\n");
-    lcdb_str(1,1,"GPS");
-    while(TRUE){
-        if (seri_cmdo_x()==TRUE){
-            TA0CTL=0;   //Parar o timer, desligar a serial do GPS
+    lcdb_str(1, 1, "GPS");
+    while (TRUE)
+    {
+        if (seri_cmdo_x() == TRUE)
+        {
+            TA0CTL = 0;   //Parar o timer, desligar a serial do GPS
             return modo;
         }
-        if (gps_tira(&x)==TRUE)
-                ser1_char(x);
+        if (gps_tira(&x) == TRUE)
+            ser1_char(x);
     }
     return modo;
 }
 
-//17 -GPRMC- Testar separaÁ„o dos dados importantes
+//17 -GPRMC- Testar separa√ß√£o dos dados importantes
 // Usa TA0
-char modo_gprmc (char modo) {
+char modo_gprmc(char modo)
+{
     char x;
     gps_config();
     modo_ser1(modo);
     ser1_str(" Testar GPRMC\n");
-    lcdb_str(1,1,"GPRMC");
-    while(TRUE){
-        if (seri_cmdo_x()==TRUE){
-            TA0CTL=0;   //Parar o timer, desligar a serial do GPS
+    lcdb_str(1, 1, "GPRMC");
+    while (TRUE)
+    {
+        if (seri_cmdo_x() == TRUE)
+        {
+            TA0CTL = 0;   //Parar o timer, desligar a serial do GPS
             return modo;
         }
-        if (gps_tira(&x)==TRUE)
-                ser1_char(x);
-        if (gps_gprmc_novo==TRUE){
-            gps_tranca=TRUE;        //Evitar que dados GPS sejam alterados
-            gps_gprmc_novo=FALSE;
+        if (gps_tira(&x) == TRUE)
+            ser1_char(x);
+        if (gps_gprmc_novo == TRUE)
+        {
+            gps_tranca = TRUE;    //Evitar que dados GPS sejam alterados
+            gps_gprmc_novo = FALSE;
             ser1_str("\nGPRMC:");
-            ser1_str(" Hora=");     ser1_str(gps_hora);
-            ser1_str(" SAT=");      ser1_char(gps_sat);
-            ser1_str(" Lat=");      ser1_str(gps_lat);
-            ser1_str(" NS=");       ser1_char(gps_ns);
-            ser1_str(" Long=");     ser1_str(gps_long);
-            ser1_str(" EW=");       ser1_char(gps_ew);
-            ser1_str(" Data=");     ser1_str(gps_data);
+            ser1_str(" Hora=");
+            ser1_str(gps_hora);
+            ser1_str(" SAT=");
+            ser1_char(gps_sat);
+            ser1_str(" Lat=");
+            ser1_str(gps_lat);
+            ser1_str(" NS=");
+            ser1_char(gps_ns);
+            ser1_str(" Long=");
+            ser1_str(gps_long);
+            ser1_str(" EW=");
+            ser1_char(gps_ew);
+            ser1_str(" Data=");
+            ser1_str(gps_data);
             ser1_crlf(1);
-            gps_tranca=FALSE;        //Liberar alteraÁ„o dados GPS
+            gps_tranca = FALSE;        //Liberar altera√ß√£o dados GPS
         }
     }
     return modo;
 }
 
-
-
-char modo_0   (char modo) { modo_ser1(modo); return modo;}
+char modo_0(char modo)
+{
+    modo_ser1(modo);
+    return modo;
+}
 //char modo_1   (char modo) { modo_ser1(modo); return modo;}
-char modo_2   (char modo) { modo_ser1(modo); return modo;}
-char modo_3   (char modo) { modo_ser1(modo); return modo;}
-char modo_4   (char modo) { modo_ser1(modo); return modo;}
-char modo_5   (char modo) { modo_ser1(modo); return modo;}
-char modo_6   (char modo) { modo_ser1(modo); return modo;}
-char modo_7   (char modo) { modo_ser1(modo); return modo;}
-char modo_8   (char modo) { modo_ser1(modo); return modo;}
-char modo_16  (char modo) { modo_ser1(modo); return modo;}
-char modo_17  (char modo) { modo_ser1(modo); return modo;}
-char modo_18  (char modo) { modo_ser1(modo); return modo;}
-char modo_99  (char modo) { ser1_str("Invalido");  return modo;}
+char modo_2(char modo)
+{
+    modo_ser1(modo);
+    return modo;
+}
+char modo_3(char modo)
+{
+    modo_ser1(modo);
+    return modo;
+}
+char modo_4(char modo)
+{
+    modo_ser1(modo);
+    return modo;
+}
+char modo_5(char modo)
+{
+    modo_ser1(modo);
+    return modo;
+}
+char modo_6(char modo)
+{
+    modo_ser1(modo);
+    return modo;
+}
+char modo_7(char modo)
+{
+    modo_ser1(modo);
+    return modo;
+}
+char modo_8(char modo)
+{
+    modo_ser1(modo);
+    return modo;
+}
+char modo_16(char modo)
+{
+    modo_ser1(modo);
+    return modo;
+}
+char modo_17(char modo)
+{
+    modo_ser1(modo);
+    return modo;
+}
+char modo_18(char modo)
+{
+    modo_ser1(modo);
+    return modo;
+}
+//modo 26 Leitura MPU detectar furto
+char modo_26(char modo)
+{
+    char x;
+    int maiorx = 0, menorx = 0, maiory = 0, menory = 0, maiorz = 0, menorz = 0;
+    int roubado, alerta = 0;
+    char vetor[14];
+    int ax, ay, az, tp, gx, gy, gz;
 
-// Imprimir modo no Serial
-void modo_ser1(char modo){
-    ser1_str("\r\nModo ");   ser1_dec8unz(modo);
+    modo_ser1(modo);
+    x = i2c_teste_adr(MPU_ADR);
+    if (x == TRUE)
+        ser1_str(" OK");
+    else
+    {
+        ser1_str(" NOK");
+        return modo;
+    }
+    ser1_crlf(1);
+    roubado = 0;
+
+    mpu_rd_vet(ACCEL_XOUT_H, vetor, 14);    //Ler 14 regs
+    ax = vetor[0];
+    ax = (ax << 8) + vetor[1];
+    ay = vetor[2];
+    ay = (ay << 8) + vetor[3];
+    az = vetor[4];
+    az = (az << 8) + vetor[5];
+    tp = vetor[6];
+    tp = (tp << 8) + vetor[7];
+    gx = vetor[8];
+    gx = (gx << 8) + vetor[9];
+    gy = vetor[10];
+    gy = (gy << 8) + vetor[11];
+    gz = vetor[12];
+    gz = (gz << 8) + vetor[13];
+
+    //Variaveis: X- 136 , Y- 88 , Z - 17
+    maiorx = gx + 136;
+    menorx = gx - 136;
+
+    maiory = gy + 88;
+    menory = gy - 88;
+
+    maiorz = gz + 17;
+    menorz = gz - 17;
+    lcdb_apaga();
+    lcdb_str(1, 1, "Ativado!");
+
+    while (TRUE)
+    {
+        mpu_rd_vet(ACCEL_XOUT_H, vetor, 14);    //Ler 14 regs
+        ax = vetor[0];
+        ax = (ax << 8) + vetor[1];
+        ay = vetor[2];
+        ay = (ay << 8) + vetor[3];
+        az = vetor[4];
+        az = (az << 8) + vetor[5];
+        tp = vetor[6];
+        tp = (tp << 8) + vetor[7];
+        gx = vetor[8];
+        gx = (gx << 8) + vetor[9];
+        gy = vetor[10];
+        gy = (gy << 8) + vetor[11];
+        gz = vetor[12];
+        gz = (gz << 8) + vetor[13];
+
+        if (gx < menorx || gx > maiorx)
+            alerta++;
+        else if (gy < menory || gy > maiory)
+            alerta++;
+        else if (gz < menorz || gz > maiorz)
+            alerta++;
+        else
+            alerta = 0;
+
+        ser1_str("Alerta: ");
+        ser1_dec16(alerta);
+        ser1_crlf(1);
+
+        ser1_str("Gx: ");
+        ser1_dec16(gx);
+        ser1_crlf(1);
+
+        ser1_str("Gy: ");
+        ser1_dec16(gy);
+        ser1_crlf(1);
+
+        ser1_str("Gz: ");
+        ser1_dec16(gz);
+        ser1_crlf(1);
+
+        if (alerta > 4)
+        {
+            roubado = 1;
+            lcdb_apaga();
+            ser1_str("Dispositivo furtado!");
+            ser1_crlf(1);
+            lcdb_str(1, 1, "FURTADO");
+            delay_10ms(400);
+            return modo;
+        }
+
+        delay_10ms(100);
+    }
+}
+char modo_99(char modo)
+{
+    ser1_str("Invalido");
+    return modo;
 }
 
+// Imprimir modo no Serial
+void modo_ser1(char modo)
+{
+    ser1_str("\r\nModo ");
+    ser1_dec8unz(modo);
+}
+//uma funcao que envia os dados do gps para o gprs que enviar pro celular
+void send_gps_gprs()
+{
+    char i, x, y;
+    char aux[2];
+    char menssagem[128];
+    gps_tranca = TRUE;        //Evitar que dados GPS sejam alterados
+    gps_gprmc_novo = FALSE;
+    for (i = 0; i < GPS_FILA_TAM; i++)
+    {
+        gps_fila[i] = 0;
+    }
+    gps_pin = 1;
+    gps_pout = 0;
+    strcpy(menssagem, "\nGPRMC:");
+    strcat(menssagem, " Hora=");
+    strcat(menssagem, gps_hora);
+    strcat(menssagem, " SAT=");
+    aux[0] = gps_sat;
+    aux[1] = '\0';
+    strcat(menssagem, aux);
+    strcat(menssagem, " Lat=");
+    strcat(menssagem, gps_lat);
+    strcat(menssagem, " NS=");
+    aux[0] = gps_ns;
+    aux[1] = '\0';
+    strcat(menssagem, aux);
+    strcat(menssagem, " Long=");
+    strcat(menssagem, gps_long);
+    strcat(menssagem, " EW=");
+    aux[0] = gps_ew;
+    aux[1] = '\0';
+    strcat(menssagem, aux);
+    strcat(menssagem, " Data=");
+    strcat(menssagem, gps_data);
+
+    ser1_str(menssagem);
+    ser1_crlf(1);
+
+    while (gps_tira(&x) == TRUE)
+        ;
+    gprs_send_msg(menssagem, y);
+    gps_tranca = FALSE;
+}

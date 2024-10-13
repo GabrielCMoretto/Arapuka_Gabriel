@@ -4,7 +4,7 @@
 #define MODOS_H_
 
 // Modos de Operação
-#define MODO_TOT  21    //Modos: 0, 1, 2 , ..., 20
+#define MODO_TOT  50    //Modos: 0, 1, 2 , ..., 26
 #define MODO_0    0     //Nada
 #define MODO_1    1     //Livre
 #define MODO_2    2     //Livre
@@ -26,6 +26,7 @@
 #define MODO_18  18     //Livre
 #define MODO_19  19     //Livre
 #define MODO_20  20     //Livre
+#define MODO_26  26
 #define MODO_99  99     //Não sei! Comando errado
 
 extern char *modos_lista[];
@@ -51,7 +52,8 @@ char modo_gprmc (char modo);
 char modo_18 (char modo);
 char modo_19 (char modo);
 char modo_20 (char modo);
+char modo_26(char modo);
 char modo_99 (char modo);
 void modo_ser1 (char modo);
-
+void send_gps_gprs();
 #endif /* MODOS_H_ */

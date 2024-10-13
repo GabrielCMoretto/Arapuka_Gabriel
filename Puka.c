@@ -94,6 +94,7 @@ int main(void){
             case MODO_18:  modo_18(modo);  break;
             case MODO_19:  modo_19(modo);  break;
             case MODO_20:  modo_20(modo);  break;
+            case MODO_26:  modo_26(modo);  break; //modo furto
             case MODO_99:  modo_99(modo);  break;   //Comando errado
         }
     }

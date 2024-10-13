@@ -15,7 +15,7 @@
 // USCI_A0=GPRS e USCI_A1=PC
 #define SERI_FILA_TAM 128   //Tamanho da fila circular de entrada serial
 #define GPRS_FILA_TAM 128   //Tamanho da fila circular de entrada do GPRS
-#define GPS_FILA_TAM 64    //Tamanho da fila circular de entrada do GPS
+#define GPS_FILA_TAM 128    //Tamanho da fila circular de entrada do GPS
 
 // Opções para Baudrate Serial
 // SMCLK = 20 MHz
@@ -36,11 +36,9 @@
 #define BR_1843k2   15      //1.843.200
 #define BR_2000k    16
 
-
 // Buffer LCD
 #define LCD_BUF_TAM  137    //Buffer para LCD com DMA 8 + 32x4 = 136
 #define USCIB1_TXBUF_ADDR  (__SFR_FARPTR) 0x062E    //Endereço USCI_B1_TXBUF
-
 
 // Parâmetros para as chaves
 #define FECHADA     0      //Chave fechada
@@ -48,5 +46,11 @@
 #define TRANSITO    2      //Mudança de estado
 #define SW_CONT_MAX 5      //Máximo de contagens
 
+// Parametros para a maquina de estados
+#define DMT 0
+#define VIG 1
+#define SUS 2
+#define ALT1 3
+#define ALT2 4
 
 #endif /* DEFINES_H_ */

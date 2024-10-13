@@ -26,9 +26,9 @@ void gprs_char(char x){
 }
 // comando que envia um comando pro gprs
 void gprs_send_cmd(char *vet, char x){
-    ser1_str("\n[");
-    ser1_str(vet);
-    ser1_str("]\n");
+    //ser1_str("\n[");
+    //ser1_str(vet);
+    //ser1_str("]\n");
     gprs_str(vet);
     delay_10ms(1);
     gprs_char(0x0D);
@@ -45,7 +45,7 @@ void gprs_send_msg(char *vet, char x){
     gprs_send_cmd("AT+CMGF=1",x);
     gprs_send_cmd("AT+CMGS=\"+5521979592145\"",x);
     gprs_str(vet);
-    delay_10ms(100);
+    delay_10ms(1);
     gprs_char(0x0A);
     delay_10ms(1);
     gprs_char(0x1A);
