@@ -10,6 +10,7 @@ GEN_OPTS__FLAG :=
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
+"./Estados.obj" \
 "./Gpio.obj" \
 "./Gprs.obj" \
 "./Gps.obj" \
@@ -154,8 +155,8 @@ Puka_20.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)
-	-$(RM) "Gpio.obj" "Gprs.obj" "Gps.obj" "Int.obj" "Lcd.obj" "Modos.obj" "Mpu.obj" "Puka.obj" "Rtc.obj" "Serial.obj" "Strings.obj" "Timer.obj" "Wq.obj" 
-	-$(RM) "Gpio.d" "Gprs.d" "Gps.d" "Int.d" "Lcd.d" "Modos.d" "Mpu.d" "Puka.d" "Rtc.d" "Serial.d" "Strings.d" "Timer.d" "Wq.d" 
+	-$(RM) "Estados.obj" "Gpio.obj" "Gprs.obj" "Gps.obj" "Int.obj" "Lcd.obj" "Modos.obj" "Mpu.obj" "Puka.obj" "Rtc.obj" "Serial.obj" "Strings.obj" "Timer.obj" "Wq.obj" 
+	-$(RM) "Estados.d" "Gpio.d" "Gprs.d" "Gps.d" "Int.d" "Lcd.d" "Modos.d" "Mpu.d" "Puka.d" "Rtc.d" "Serial.d" "Strings.d" "Timer.d" "Wq.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

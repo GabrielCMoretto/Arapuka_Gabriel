@@ -9,6 +9,7 @@ CMD_SRCS += \
 ../lnk_msp430f5529.cmd 
 
 C_SRCS += \
+../Estados.c \
 ../Gpio.c \
 ../Gprs.c \
 ../Gps.c \
@@ -24,6 +25,7 @@ C_SRCS += \
 ../Wq.c 
 
 C_DEPS += \
+./Estados.d \
 ./Gpio.d \
 ./Gprs.d \
 ./Gps.d \
@@ -39,6 +41,7 @@ C_DEPS += \
 ./Wq.d 
 
 OBJS += \
+./Estados.obj \
 ./Gpio.obj \
 ./Gprs.obj \
 ./Gps.obj \
@@ -54,6 +57,7 @@ OBJS += \
 ./Wq.obj 
 
 OBJS__QUOTED += \
+"Estados.obj" \
 "Gpio.obj" \
 "Gprs.obj" \
 "Gps.obj" \
@@ -69,6 +73,7 @@ OBJS__QUOTED += \
 "Wq.obj" 
 
 C_DEPS__QUOTED += \
+"Estados.d" \
 "Gpio.d" \
 "Gprs.d" \
 "Gps.d" \
@@ -84,6 +89,7 @@ C_DEPS__QUOTED += \
 "Wq.d" 
 
 C_SRCS__QUOTED += \
+"../Estados.c" \
 "../Gpio.c" \
 "../Gprs.c" \
 "../Gps.c" \

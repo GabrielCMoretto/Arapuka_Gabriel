@@ -18,6 +18,7 @@ Modos.obj: ../Wq.h
 Modos.obj: ../Gps.h
 Modos.obj: ../Gprs.h
 Modos.obj: ../Strings.h
+Modos.obj: ../Estados.h
 
 ../Modos.c:
 
@@ -54,4 +55,6 @@ C:/ti/ccs1250/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/intrinsics_leg
 ../Gprs.h:
 
 ../Strings.h:
+
+../Estados.h:
 

@@ -1,39 +1,38 @@
 // Puka - Globais.h
 
-char gps_gprmc_ok[]="083559.00,A,4717.11437,N,00833.91522,E,0.004,77.52,091202,,,A*57\r\n";    //Testar separação
-char gps_gprmc_nok[]=",V,,,,,,,,,,N*53\r\n";        //Testar separação - sem satélites
+char gps_gprmc_ok[] =
+        "083559.00,A,4717.11437,N,00833.91522,E,0.004,77.52,091202,,,A*57\r\n"; //Testar separação
+char gps_gprmc_nok[] = ",V,,,,,,,,,,N*53\r\n"; //Testar separação - sem satélites
 
 // Lista impressa quando se entra com "?"
 volatile char modo;      //Modo de operação
-char *modos_lista[21]={
-  "00) Nada\n",             //00
-  "01) Livre_01\n",         //01
-  "02) Livre_02\n",         //02
-  "03) Livre_03\n",         //03
-  "04) Livre_04\n",         //04
-  "05) Livre_05\n",         //05
-  "06) Livre_06\n",         //06
-  "07) Livre_07\n",         //07
-  "08) Livre_08\n",         //08
-  "09) Livre_09\n",         //09
-  "10) Testar SW\n",        //10 - SW
-  "11) Testar LEDs\n",      //11 - LEDs
-  "12) Testar LCD\n",       //12 - LCD
-  "13) Testar MPU\n",       //13 - MPU
-  "14) Testar RTC\n",       //14 - RTC
-  "15) Testar WQ\n",        //15 - WQ
-  "16) Testar GPS\n",       //16 - GPS
-  "17) Testar GPRMC\n",     //17 - GPRMC
-  "18) Livre_18\n",         //18
-  "19) Testar ESP8266\n",   //19 - ESP8266
-  "20) Livre_20\n"};        //20
+char *modos_lista[21] = { "00) Nada\n",             //00
+        "01) Livre_01\n",         //01
+        "02) Livre_02\n",         //02
+        "03) Livre_03\n",         //03
+        "04) Livre_04\n",         //04
+        "05) Livre_05\n",         //05
+        "06) Livre_06\n",         //06
+        "07) Livre_07\n",         //07
+        "08) Livre_08\n",         //08
+        "09) Livre_09\n",         //09
+        "10) Testar SW\n",        //10 - SW
+        "11) Testar LEDs\n",      //11 - LEDs
+        "12) Testar LCD\n",       //12 - LCD
+        "13) Testar MPU\n",       //13 - MPU
+        "14) Testar RTC\n",       //14 - RTC
+        "15) Testar WQ\n",        //15 - WQ
+        "16) Testar GPS\n",       //16 - GPS
+        "17) Testar GPRMC\n",     //17 - GPRMC
+        "18) Livre_18\n",         //18
+        "19) Testar ESP8266\n",   //19 - ESP8266
+        "20) Livre_20\n" };        //20
 
 // MPU 6050
 volatile char mpu_tem;      //TRUE se LCD estiver presente
 
-
 // Timers - Variáveis
-volatile unsigned int  crono_cont;   //Contador para o Cronômetro (TA1)
+volatile unsigned int crono_cont;   //Contador para o Cronômetro (TA1)
 volatile unsigned char flag_c_seg;   //Flag Centésimos de segundo
 volatile unsigned char flag_d_seg;   //Flag Décimos de segundo
 volatile unsigned char flag_seg;     //Flag Segundo
@@ -77,9 +76,9 @@ volatile int gprs_pin, gprs_pout;       //Ponteiros para usar a fila
 
 // GPS: serial por Software
 // Variáveis para o prog principal colher as informações,strigs terminam com zero
-volatile char gps_tranca;       //Prog principal coletando informações, perde uma atualização do GPS
+volatile char gps_tranca; //Prog principal coletando informações, perde uma atualização do GPS
 volatile char gps_gprmc_novo;   //Indica que tem novos dados
-volatile char gps_st=0;         //Estados para a busca do GPRMC
+volatile char gps_st = 0;         //Estados para a busca do GPRMC
 volatile char gps_sat;          //(TRUE/FALSE) Achou satélites?
 volatile char gps_hora[11];     //hhmmss.sss0
 volatile char gps_data[7];      //ddmmyy0
@@ -87,13 +86,20 @@ volatile char gps_lat[11];      //ddmm.mmmmm0
 volatile char gps_ns;           //(N/S) Latitude
 volatile char gps_long[12];     //dddmm.mmmmm0
 volatile char gps_ew;           //(E/W) Latitude
-volatile char gps_gprmc[90];    //$GPRMC receber os dados para extrair parâmetros
+volatile char gps_gprmc[90];   //$GPRMC receber os dados para extrair parâmetros
 
 volatile char gps_fila[GPS_FILA_TAM];   //Espaço para a fila do GPS
 volatile int gps_pin, gps_pout;         //Ponteiros para usar a fila
 volatile int gps_estado;                //Estado do receptor por software
-volatile char gps_dado;                 //Montar o dado que chega serialmente do GPS
+volatile char gps_dado;             //Montar o dado que chega serialmente do GPS
 volatile char numero_telefone = "+5521979592145";
 
+////////////////////////////////////////////////////////////
+/////////// MAQUINA DE ESTADOS DO OPERA ////////////////////
+////////////////////////////////////////////////////////////
 
-
+char serialMSG = TRUE;
+char estado = DMT;
+int ax, ay, az, tp, gx, gy, gz;
+int maiorx = 0, menorx = 0, maiory = 0, menory = 0, maiorz = 0, menorz = 0,roubado=0, alerta=0;
+char vetor[14];

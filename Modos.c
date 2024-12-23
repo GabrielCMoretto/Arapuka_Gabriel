@@ -12,14 +12,11 @@
 #include "Gps.h"
 #include "Gprs.h"
 #include "Strings.h"
+#include "Estados.h"
 // 1 -Operacao
 char modo_1(char modo)
 {
-    int maiorx = 0, menorx = 0, maiory = 0, menory = 0, maiorz = 0, menorz = 0;
-    int roubado, alerta = 0;
-    char vetor[14];
     char x;
-    int ax, ay, az, tp, gx, gy, gz;
 
     x = i2c_teste_adr(MPU_ADR);
     if (x == TRUE)
@@ -30,7 +27,6 @@ char modo_1(char modo)
         return modo;
     }
     ser1_crlf(1);
-    roubado = 0;
 
     mpu_rd_vet(ACCEL_XOUT_H, vetor, 14);    //Ler 14 regs
     ax = vetor[0];
@@ -59,11 +55,10 @@ char modo_1(char modo)
     menorz = gz - 17;
 
     char letra = 0, base = 0;
-    char serialMSG = TRUE;
     char lin, col;
     char qtd, argc[4], argv[10];
     modo_ser1(modo);
-    char  i, j, y;
+    char i, j, y;
     ser1_str(" Puka-Operacao (digite x para sair)\n");
     lcdb_str(1, 1, "Opera");
     led_vm();
@@ -74,7 +69,6 @@ char modo_1(char modo)
     //gps_config(); //esse gps fica com a fila cheia o tempo todo
 
     char vt[16];
-    char estado = DMT;
     long wr_adr = 0;  //Endereço para as escritas
     long rd_adr = 0;  //Endereço para as leituras
     long er_adr = 0;  //Endereço para apagar
@@ -96,106 +90,21 @@ char modo_1(char modo)
         {
 
         case DMT:
-            if (serialMSG)
-            {
-                ser1_str("Estado:Dormente\n");
-                serialMSG = FALSE;
-            }
-            estado = VIG;
-            serialMSG = TRUE;
+            dormente();
             break;
         case VIG:
-            if (serialMSG)
-            {
-                ser1_str("Estado:Vigilia\n");
-                serialMSG = FALSE;
-            }
-            mpu_rd_vet(ACCEL_XOUT_H, vetor, 14);    //Ler 14 regs
-            ax = vetor[0];
-            ax = (ax << 8) + vetor[1];
-            ay = vetor[2];
-            ay = (ay << 8) + vetor[3];
-            az = vetor[4];
-            az = (az << 8) + vetor[5];
-            tp = vetor[6];
-            tp = (tp << 8) + vetor[7];
-            gx = vetor[8];
-            gx = (gx << 8) + vetor[9];
-            gy = vetor[10];
-            gy = (gy << 8) + vetor[11];
-            gz = vetor[12];
-            gz = (gz << 8) + vetor[13];
-
-            if (gx < menorx || gx > maiorx)
-                alerta++;
-            else if (gy < menory || gy > maiory)
-                alerta++;
-            else if (gz < menorz || gz > maiorz)
-                alerta++;
-            else
-                alerta = 0;
-
-            ser1_str("Alerta: ");
-            ser1_dec16(alerta);
-            ser1_crlf(1);
-
-            ser1_str("Gx: ");
-            ser1_dec16(gx);
-            ser1_crlf(1);
-
-            ser1_str("Gy: ");
-            ser1_dec16(gy);
-            ser1_crlf(1);
-
-            ser1_str("Gz: ");
-            ser1_dec16(gz);
-            ser1_crlf(1);
-
-            if (alerta > 4)
-            {
-                roubado = 1;
-                lcdb_apaga();
-                ser1_str("Dispositivo entrando no modo suspeito!");
-                ser1_crlf(1);
-                delay_10ms(400);
-                estado = SUS;
-                serialMSG = TRUE;
-            }
-            delay_10ms(100);
-
+            vigilia();
             break;
         case SUS:
-            if (serialMSG)
-            {
-                ser1_str("Estado:Suspeito\n");
-                serialMSG = FALSE;
-            }
+            suspeito();
             break;
         case ALT1:
-            if (serialMSG)
-            {
-                ser1_str("Estado:Alerta 1\n");
-                serialMSG = FALSE;
-            }
+            alerta1();
             break;
         case ALT2:
-            if (serialMSG)
-            {
-                ser1_str("Estado:Alerta 1\n");
-                serialMSG = FALSE;
-            }
-            break;
+            alerta2();
         default:
         }
-//        if (gps_tira(&x) == TRUE)
-//        {
-//            //ser1_char(x);
-//        }
-//        if (gps_gprmc_novo == TRUE)
-//        {
-//            send_gps_gprs();
-//            break;
-//        }
 
     }
     TA0CTL = 0;   //Parar o timer, desligar a serial do GPS

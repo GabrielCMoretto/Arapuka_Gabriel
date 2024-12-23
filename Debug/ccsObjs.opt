@@ -1,3 +1,4 @@
+"./Estados.obj"
 "./Gpio.obj"
 "./Gprs.obj"
 "./Gps.obj"

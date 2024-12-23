@@ -1,7 +1,7 @@
 ******************************************************************************
                   MSP430 Linker PC v21.6.1                     
 ******************************************************************************
->> Linked Sun Oct 13 16:57:19 2024
+>> Linked Mon Dec 23 19:17:34 2024
 
 OUTPUT FILE NAME:   <Puka_20.out>
 ENTRY POINT SYMBOL: "_c_int00_noargs"  address: 000044de
@@ -19,8 +19,8 @@ MEMORY CONFIGURATION
   INFOB                 00001900   00000080  00000000  00000080  RWIX
   INFOA                 00001980   00000080  00000000  00000080  RWIX
   USBRAM                00001c00   00000800  00000000  00000800  RWIX
-  RAM                   00002400   00002000  000003f6  00001c0a  RWIX
-  FLASH                 00004400   0000bb80  00000714  0000b46c  RWIX
+  RAM                   00002400   00002000  00000425  00001bdb  RWIX
+  FLASH                 00004400   0000bb80  00000746  0000b43a  RWIX
   INT00                 0000ff80   00000002  00000000  00000002  RWIX
   INT01                 0000ff82   00000002  00000000  00000002  RWIX
   INT02                 0000ff84   00000002  00000000  00000002  RWIX
@@ -85,7 +85,7 @@ MEMORY CONFIGURATION
   INT61                 0000fffa   00000002  00000002  00000000  RWIX
   INT62                 0000fffc   00000002  00000002  00000000  RWIX
   RESET                 0000fffe   00000002  00000002  00000000  RWIX
-  FLASH2                00010000   000143f8  00002dd6  00011622  RWIX
+  FLASH2                00010000   000143f8  00002f48  000114b0  RWIX
 
 
 SECTION ALLOCATION MAP
@@ -93,55 +93,63 @@ SECTION ALLOCATION MAP
  output                                  attributes/
 section   page    origin      length       input sections
 --------  ----  ----------  ----------   ----------------
-.bss       0    00002400    000002b9     UNINITIALIZED
+.bss       0    00002400    000002d5     UNINITIALIZED
                   00002400    0000008a     (.common:lcd_buf)
                   0000248a    00000080     (.common:gprs_fila)
                   0000250a    00000080     (.common:gps_fila)
                   0000258a    00000080     (.common:seri_fila)
                   0000260a    0000005a     (.common:gps_gprmc)
-                  00002664    0000000c     (.common:gps_hora)
-                  00002670    0000000c     (.common:gps_lat)
-                  0000267c    0000000c     (.common:gps_long)
-                  00002688    00000008     (.common:gps_data)
-                  00002690    00000002     (.common:crono_cont)
-                  00002692    00000002     (.common:gprs_pin)
-                  00002694    00000002     (.common:gprs_pout)
-                  00002696    00000002     (.common:gps_estado)
-                  00002698    00000002     (.common:gps_pin)
-                  0000269a    00000002     (.common:gps_pout)
-                  0000269c    00000002     (.common:seri_pin)
-                  0000269e    00000002     (.common:seri_pout)
-                  000026a0    00000001     (.common:cont_c_seg)
-                  000026a1    00000001     (.common:cont_d_seg)
-                  000026a2    00000001     (.common:cont_min)
-                  000026a3    00000001     (.common:cont_seg)
-                  000026a4    00000001     (.common:flag_c_seg)
-                  000026a5    00000001     (.common:flag_d_seg)
-                  000026a6    00000001     (.common:flag_seg)
-                  000026a7    00000001     (.common:gps_dado)
-                  000026a8    00000001     (.common:gps_ew)
-                  000026a9    00000001     (.common:gps_gprmc_novo)
-                  000026aa    00000001     (.common:gps_ns)
-                  000026ab    00000001     (.common:gps_sat)
-                  000026ac    00000001     (.common:gps_tranca)
-                  000026ad    00000001     (.common:i2c_tranca)
-                  000026ae    00000001     (.common:lcd_adr)
-                  000026af    00000001     (.common:lcd_flag)
-                  000026b0    00000001     (.common:lcd_tem)
-                  000026b1    00000001     (.common:modo)
-                  000026b2    00000001     (.common:mpu_tem)
-                  000026b3    00000001     (.common:sw1)
-                  000026b4    00000001     (.common:sw1_cont)
-                  000026b5    00000001     (.common:sw1_estado)
-                  000026b6    00000001     (.common:sw2)
-                  000026b7    00000001     (.common:sw2_cont)
-                  000026b8    00000001     (.common:sw2_estado)
+                  00002664    0000000e     (.common:vetor)
+                  00002672    0000000c     (.common:gps_hora)
+                  0000267e    0000000c     (.common:gps_lat)
+                  0000268a    0000000c     (.common:gps_long)
+                  00002696    00000008     (.common:gps_data)
+                  0000269e    00000002     (.common:ax)
+                  000026a0    00000002     (.common:ay)
+                  000026a2    00000002     (.common:az)
+                  000026a4    00000002     (.common:crono_cont)
+                  000026a6    00000002     (.common:gprs_pin)
+                  000026a8    00000002     (.common:gprs_pout)
+                  000026aa    00000002     (.common:gps_estado)
+                  000026ac    00000002     (.common:gps_pin)
+                  000026ae    00000002     (.common:gps_pout)
+                  000026b0    00000002     (.common:gx)
+                  000026b2    00000002     (.common:gy)
+                  000026b4    00000002     (.common:gz)
+                  000026b6    00000002     (.common:seri_pin)
+                  000026b8    00000002     (.common:seri_pout)
+                  000026ba    00000002     (.common:tp)
+                  000026bc    00000001     (.common:cont_c_seg)
+                  000026bd    00000001     (.common:cont_d_seg)
+                  000026be    00000001     (.common:cont_min)
+                  000026bf    00000001     (.common:cont_seg)
+                  000026c0    00000001     (.common:flag_c_seg)
+                  000026c1    00000001     (.common:flag_d_seg)
+                  000026c2    00000001     (.common:flag_seg)
+                  000026c3    00000001     (.common:gps_dado)
+                  000026c4    00000001     (.common:gps_ew)
+                  000026c5    00000001     (.common:gps_gprmc_novo)
+                  000026c6    00000001     (.common:gps_ns)
+                  000026c7    00000001     (.common:gps_sat)
+                  000026c8    00000001     (.common:gps_tranca)
+                  000026c9    00000001     (.common:i2c_tranca)
+                  000026ca    00000001     (.common:lcd_adr)
+                  000026cb    00000001     (.common:lcd_flag)
+                  000026cc    00000001     (.common:lcd_tem)
+                  000026cd    00000001     (.common:modo)
+                  000026ce    00000001     (.common:mpu_tem)
+                  000026cf    00000001     (.common:sw1)
+                  000026d0    00000001     (.common:sw1_cont)
+                  000026d1    00000001     (.common:sw1_estado)
+                  000026d2    00000001     (.common:sw2)
+                  000026d3    00000001     (.common:sw2_cont)
+                  000026d4    00000001     (.common:sw2_estado)
 
-.data      0    000026ba    0000009d     UNINITIALIZED
-                  000026ba    00000054     Puka.obj (.data:modos_lista)
-                  0000270e    00000043     Puka.obj (.data:gps_gprmc_ok)
-                  00002751    00000005     Puka.obj (.data)
-                  00002756    00000001     Gps.obj (.data)
+.data      0    000026d6    000000b0     UNINITIALIZED
+                  000026d6    00000054     Puka.obj (.data:modos_lista)
+                  0000272a    00000043     Puka.obj (.data:gps_gprmc_ok)
+                  0000276d    00000001     Gps.obj (.data)
+                  0000276e    00000018     Puka.obj (.data)
 
 .stack     0    00004360    000000a0     UNINITIALIZED
                   00004360    00000004     rts430x_lc_rd_eabi.lib : boot.c.obj (.stack)
@@ -159,26 +167,26 @@ section   page    origin      length       input sections
                   00004530    0000000e     Timer.obj (.text:_isr:isr_ta1ifg)
                   0000453e    00000008     rts430x_lc_rd_eabi.lib : isr_trap.asm.obj (.text:_isr:__TI_ISR_TRAP)
 
-.cinit     0    00004a58    000000bc     
-                  00004a58    00000099     (.cinit..data.load) [load image, compression = lzss]
-                  00004af1    00000001     --HOLE-- [fill = 0]
-                  00004af2    0000000c     (__TI_handler_table)
-                  00004afe    00000006     (.cinit..bss.load) [load image, compression = zero_init]
-                  00004b04    00000010     (__TI_cinit_table)
+.cinit     0    00004a86    000000c0     
+                  00004a86    0000009e     (.cinit..data.load) [load image, compression = lzss]
+                  00004b24    0000000c     (__TI_handler_table)
+                  00004b30    00000006     (.cinit..bss.load) [load image, compression = zero_init]
+                  00004b36    00000010     (__TI_cinit_table)
 
 .binit     0    00004400    00000000     
 
 .init_array 
 *          0    00004400    00000000     UNINITIALIZED
 
-.const     0    00004546    00000512     
-                  00004546    0000029a     Modos.obj (.const:.string)
-                  000047e0    0000017a     Puka.obj (.const:.string)
-                  0000495a    0000004a     Serial.obj (.const:.string)
-                  000049a4    00000046     Gps.obj (.const:.string)
-                  000049ea    00000042     Gprs.obj (.const:.string)
-                  00004a2c    00000016     Mpu.obj (.const:.string)
-                  00004a42    00000016     Rtc.obj (.const:.string)
+.const     0    00004546    00000540     
+                  00004546    0000022c     Modos.obj (.const:.string)
+                  00004772    0000017a     Puka.obj (.const:.string)
+                  000048ec    0000009c     Estados.obj (.const:.string)
+                  00004988    0000004a     Serial.obj (.const:.string)
+                  000049d2    00000046     Gps.obj (.const:.string)
+                  00004a18    00000042     Gprs.obj (.const:.string)
+                  00004a5a    00000016     Mpu.obj (.const:.string)
+                  00004a70    00000016     Rtc.obj (.const:.string)
 
 RTC        0    0000ffd2    00000002     
                   0000ffd2    00000002     rts430x_lc_rd_eabi.lib : int41.asm.obj (.int41)
@@ -257,160 +265,166 @@ SYSNMI     0    0000fffc    00000002
 .reset     0    0000fffe    00000002     
                   0000fffe    00000002     rts430x_lc_rd_eabi.lib : boot.c.obj (.reset)
 
-.text      0    00010000    00002dd6     
-                  00010000    0000026c     Modos.obj (.text:modo_1)
-                  0001026c    00000258     Modos.obj (.text:modo_wq)
-                  000104c4    00000220     Puka.obj (.text:main)
-                  000106e4    000001aa     Modos.obj (.text:modo_26)
-                  0001088e    00000160     Modos.obj (.text:modo_rtc)
-                  000109ee    00000156     Modos.obj (.text:modo_mpu)
-                  00010b44    00000136     Gps.obj (.text:gps_gprmc_extrai)
-                  00010c7a    000000fc     Serial.obj (.text:ser1_config)
-                  00010d76    000000f2     Modos.obj (.text:modo_sw)
-                  00010e68    000000e8     Gprs.obj (.text:ser0_config)
-                  00010f50    000000e6     Gps.obj (.text:gps_busca_gprmc)
-                  00011036    000000e0     Modos.obj (.text:modo_leds)
-                  00011116    000000da     Modos.obj (.text:modo_gprmc)
-                  000111f0    000000d8     Strings.obj (.text:str_2_num)
-                  000112c8    000000bc     Serial.obj (.text:seri_cmdo)
-                  00011384    000000b8     Lcd.obj (.text:lcd_inic)
-                  0001143c    000000b4     Modos.obj (.text:modo_19)
-                  000114f0    000000ae     Lcd.obj (.text:lcd_dma_config)
-                  0001159e    00000098     Lcd.obj (.text:lcdb_str)
-                  00011636    00000098     Mpu.obj (.text:mpu_rd_vet)
-                  000116ce    00000098     Rtc.obj (.text:rtc_rd_vet)
-                  00011766    00000096     Modos.obj (.text:modo_9)
-                  000117fc    00000096     Gpio.obj (.text:sw_monitorar)
-                  00011892    00000088     Serial.obj (.text:ser1_linha)
-                  0001191a    0000007a     Strings.obj (.text:str_dec16)
-                  00011994    00000076     rts430x_lc_rd_eabi.lib : copy_decompress_lzss.c.obj (.text:decompress:lzss:__TI_decompress_lzss)
-                  00011a0a    00000076     Gps.obj (.text:gps_dump)
-                  00011a80    00000076     Rtc.obj (.text:rtc_wr_vet)
-                  00011af6    00000076     Serial.obj (.text:seri_dump)
-                  00011b6c    00000072     Strings.obj (.text:str_data_hora)
-                  00011bde    00000072     Wq.obj (.text:wq_rd_blk)
-                  00011c50    0000006e     Lcd.obj (.text:lcdb_apaga)
-                  00011cbe    0000006c     Gprs.obj (.text:gprs_send_msg)
-                  00011d2a    0000006a     Lcd.obj (.text:lcdb_char)
-                  00011d94    00000068     Wq.obj (.text:wq_wr_blk)
-                  00011dfc    00000066     Mpu.obj (.text:mpu_wr)
-                  00011e62    00000066     Puka.obj (.text:sel_modo)
-                  00011ec8    00000066     Strings.obj (.text:str_rmvz_u)
-                  00011f2e    00000064     Lcd.obj (.text:i2c_config)
-                  00011f92    00000064     Modos.obj (.text:modo_20)
-                  00011ff6    00000064     Strings.obj (.text:str_dec8u)
-                  0001205a    0000005e     Gpio.obj (.text:gpio_config)
-                  000120b8    0000005a     Modos.obj (.text:modo_lcd)
-                  00012112    0000005a     Mpu.obj (.text:mpu_config)
-                  0001216c    00000054     rts430x_lc_rd_eabi.lib : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit_hold_wdt:__TI_auto_init_nobinit_nopinit_hold_wdt)
-                  000121c0    00000050     Wq.obj (.text:wq_erase_4k)
-                  00012210    0000004c     Timer.obj (.text:clk_20mhz)
-                  0001225c    0000004a     Modos.obj (.text:modo_gps)
-                  000122a6    0000004a     Strings.obj (.text:str_hex32)
-                  000122f0    00000048     Lcd.obj (.text:lcd_aux)
-                  00012338    00000048     Lcd.obj (.text:lcd_delay)
-                  00012380    00000046     Strings.obj (.text:str_hex8)
-                  000123c6    00000044     Strings.obj (.text:str_hex16)
-                  0001240a    00000040     Serial.obj (.text:seri_cmdo_x)
-                  0001244a    0000003e     rts430x_lc_rd_eabi.lib : asr32.asm.obj (.text:l_asr_const)
-                  00012488    0000003e                            : lsl32.asm.obj (.text:l_lsl_const)
-                  000124c6    0000003e     Serial.obj (.text:rec_msg)
-                  00012504    0000003c     Lcd.obj (.text:i2c_trancar)
-                  00012540    0000003a     Wq.obj (.text:w25_manuf_dev_id)
-                  0001257a    00000038     Lcd.obj (.text:lcd_presente)
-                  000125b2    00000038     Strings.obj (.text:str_cmp)
-                  000125ea    00000036     Gprs.obj (.text:gprs_tira)
-                  00012620    00000036     Gps.obj (.text:gps_tira)
-                  00012656    00000036     Serial.obj (.text:seri_tira)
-                  0001268c    00000034     Gps.obj (.text:copia_ate_virgula)
-                  000126c0    00000034     Strings.obj (.text:str_maiusc)
-                  000126f4    00000030     Gprs.obj (.text:gprs_poe)
-                  00012724    00000030     Gps.obj (.text:gps_config)
-                  00012754    00000030     Gps.obj (.text:gps_poe)
-                  00012784    00000030     Serial.obj (.text:seri_poe)
-                  000127b4    0000002e     Serial.obj (.text:seri_xereta)
-                  000127e2    0000002c     rts430x_lc_rd_eabi.lib : div16s.asm.obj (.text)
-                  0001280e    0000002c     Wq.obj (.text:spi_config)
-                  0001283a    0000002a     Lcd.obj (.text:i2c_teste_adr)
-                  00012864    0000002a     Serial.obj (.text:seri_vazia)
-                  0001288e    00000028     Gprs.obj (.text:gprs_send_cmd)
-                  000128b6    00000028     Gprs.obj (.text:gprs_str)
-                  000128de    00000028     Lcd.obj (.text:lcdb_data)
-                  00012906    00000028     Lcd.obj (.text:lcdb_hora)
-                  0001292e    00000028     Serial.obj (.text:ser1_str)
-                  00012956    00000028     Serial.obj (.text:seri_come_crlf)
-                  0001297e    00000024     rts430x_lc_rd_eabi.lib : copy_zero_init.c.obj (.text:decompress:ZI:__TI_zero_init_nomemset:__TI_zero_init_nomemset)
-                  000129a2    00000024     Strings.obj (.text:eh_hexa)
-                  000129c6    00000024     Lcd.obj (.text:lcd_atualiza)
-                  000129ea    00000024     Lcd.obj (.text:lcdb_hex16)
-                  00012a0e    00000024     rts430x_lc_rd_eabi.lib : mult32_f5hw.asm.obj (.text)
-                  00012a32    00000020     Timer.obj (.text:delay_10ms)
-                  00012a52    00000020     Strings.obj (.text:str_bcd8)
-                  00012a72    0000001e     Serial.obj (.text:ser1_crlf)
-                  00012a90    0000001c     Gprs.obj (.text:gprs_cheia)
-                  00012aac    0000001c     Gps.obj (.text:gps_cheia)
-                  00012ac8    0000001c     Serial.obj (.text:ser1_dec8unz)
-                  00012ae4    0000001c     Serial.obj (.text:seri_cheia)
-                  00012b00    0000001c     Wq.obj (.text:wq_ocupado)
-                  00012b1c    0000001a     Wq.obj (.text:spi_transf)
-                  00012b36    00000018     rts430x_lc_rd_eabi.lib : mult16_f5hw.asm.obj (.text)
-                  00012b4e    00000018     Wq.obj (.text:wq_sr1_rd)
-                  00012b66    00000018     Wq.obj (.text:wq_sr2_rd)
-                  00012b7e    00000016     Modos.obj (.text:modo_ser1)
-                  00012b94    00000016     rts430x_lc_rd_eabi.lib : div16u.asm.obj (.text)
-                  00012baa    00000016     Serial.obj (.text:ser1_data_hora)
-                  00012bc0    00000016     Serial.obj (.text:ser1_dec16)
-                  00012bd6    00000016     Serial.obj (.text:ser1_dec8u)
-                  00012bec    00000016     Serial.obj (.text:ser1_hex32)
-                  00012c02    00000016     Serial.obj (.text:ser1_hex8)
-                  00012c18    00000016     Serial.obj (.text:ser1_spc)
-                  00012c2e    00000014     Strings.obj (.text:eh_dec)
-                  00012c42    00000014     rts430x_lc_rd_eabi.lib : memcpy.c.obj (.text:memcpy)
-                  00012c56    00000014     Timer.obj (.text:ta2_config)
-                  00012c6a    00000012     Strings.obj (.text:asc_nib)
-                  00012c7c    00000012     rts430x_lc_rd_eabi.lib : copy_decompress_none.c.obj (.text:decompress:none:__TI_decompress_none)
-                  00012c8e    00000012     Modos.obj (.text:modo_99)
-                  00012ca0    00000012     Wq.obj (.text:wq_WEL)
-                  00012cb2    00000010     Timer.obj (.text:crono_inic)
-                  00012cc2    00000010     Wq.obj (.text:wq_wel)
-                  00012cd2    0000000e     Modos.obj (.text:modo_0)
-                  00012ce0    0000000e     Modos.obj (.text:modo_18)
-                  00012cee    0000000e     Modos.obj (.text:modo_2)
-                  00012cfc    0000000e     Modos.obj (.text:modo_3)
-                  00012d0a    0000000e     Modos.obj (.text:modo_4)
-                  00012d18    0000000e     Modos.obj (.text:modo_5)
-                  00012d26    0000000e     Modos.obj (.text:modo_6)
-                  00012d34    0000000e     Modos.obj (.text:modo_7)
-                  00012d42    0000000e     Modos.obj (.text:modo_8)
-                  00012d50    0000000c     Gprs.obj (.text:gprs_char)
-                  00012d5c    0000000c     Serial.obj (.text:ser1_char)
-                  00012d68    0000000a     rts430x_lc_rd_eabi.lib : abs.c.obj (.text:abs)
-                  00012d72    0000000a     Timer.obj (.text:crono_zera)
-                  00012d7c    0000000a     Gprs.obj (.text:gprs_config)
-                  00012d86    0000000a     Serial.obj (.text:seri_config)
-                  00012d90    00000008     Gpio.obj (.text:led_VD)
-                  00012d98    00000008     Gpio.obj (.text:led_Vd)
-                  00012da0    00000008     Gpio.obj (.text:led_vd)
-                  00012da8    00000008     Wq.obj (.text:wq_CS)
-                  00012db0    00000008     Wq.obj (.text:wq_cs)
-                  00012db8    00000006     rts430x_lc_rd_eabi.lib : exit.c.obj (.text:abort)
-                  00012dbe    00000006     Gpio.obj (.text:led_VM)
-                  00012dc4    00000006     Gpio.obj (.text:led_Vm)
-                  00012dca    00000006     Gpio.obj (.text:led_vm)
-                  00012dd0    00000004     rts430x_lc_rd_eabi.lib : pre_init.c.obj (.text:_system_pre_init)
-                  00012dd4    00000002                            : startup.c.obj (.text:_system_post_cinit)
+.text      0    00010000    00002f48     
+                  00010000    00000258     Modos.obj (.text:modo_wq)
+                  00010258    00000220     Puka.obj (.text:main)
+                  00010478    000001d8     Modos.obj (.text:modo_1)
+                  00010650    000001ae     Estados.obj (.text:vigilia)
+                  000107fe    000001aa     Modos.obj (.text:modo_26)
+                  000109a8    00000160     Modos.obj (.text:modo_rtc)
+                  00010b08    00000156     Modos.obj (.text:modo_mpu)
+                  00010c5e    00000136     Gps.obj (.text:gps_gprmc_extrai)
+                  00010d94    000000fc     Serial.obj (.text:ser1_config)
+                  00010e90    000000f2     Modos.obj (.text:modo_sw)
+                  00010f82    000000e8     Gprs.obj (.text:ser0_config)
+                  0001106a    000000e6     Gps.obj (.text:gps_busca_gprmc)
+                  00011150    000000e0     Modos.obj (.text:modo_leds)
+                  00011230    000000da     Modos.obj (.text:modo_gprmc)
+                  0001130a    000000d8     Strings.obj (.text:str_2_num)
+                  000113e2    000000bc     Serial.obj (.text:seri_cmdo)
+                  0001149e    000000b8     Lcd.obj (.text:lcd_inic)
+                  00011556    000000b4     Modos.obj (.text:modo_19)
+                  0001160a    000000ae     Lcd.obj (.text:lcd_dma_config)
+                  000116b8    00000098     Lcd.obj (.text:lcdb_str)
+                  00011750    00000098     Mpu.obj (.text:mpu_rd_vet)
+                  000117e8    00000098     Rtc.obj (.text:rtc_rd_vet)
+                  00011880    00000096     Modos.obj (.text:modo_9)
+                  00011916    00000096     Gpio.obj (.text:sw_monitorar)
+                  000119ac    00000088     Serial.obj (.text:ser1_linha)
+                  00011a34    0000007a     Strings.obj (.text:str_dec16)
+                  00011aae    00000076     rts430x_lc_rd_eabi.lib : copy_decompress_lzss.c.obj (.text:decompress:lzss:__TI_decompress_lzss)
+                  00011b24    00000076     Gps.obj (.text:gps_dump)
+                  00011b9a    00000076     Rtc.obj (.text:rtc_wr_vet)
+                  00011c10    00000076     Serial.obj (.text:seri_dump)
+                  00011c86    00000072     Strings.obj (.text:str_data_hora)
+                  00011cf8    00000072     Wq.obj (.text:wq_rd_blk)
+                  00011d6a    0000006e     Lcd.obj (.text:lcdb_apaga)
+                  00011dd8    0000006c     Gprs.obj (.text:gprs_send_msg)
+                  00011e44    0000006a     Lcd.obj (.text:lcdb_char)
+                  00011eae    00000068     Wq.obj (.text:wq_wr_blk)
+                  00011f16    00000066     Mpu.obj (.text:mpu_wr)
+                  00011f7c    00000066     Puka.obj (.text:sel_modo)
+                  00011fe2    00000066     Strings.obj (.text:str_rmvz_u)
+                  00012048    00000064     Lcd.obj (.text:i2c_config)
+                  000120ac    00000064     Modos.obj (.text:modo_20)
+                  00012110    00000064     Strings.obj (.text:str_dec8u)
+                  00012174    0000005e     Gpio.obj (.text:gpio_config)
+                  000121d2    0000005a     Modos.obj (.text:modo_lcd)
+                  0001222c    0000005a     Mpu.obj (.text:mpu_config)
+                  00012286    00000054     rts430x_lc_rd_eabi.lib : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit_hold_wdt:__TI_auto_init_nobinit_nopinit_hold_wdt)
+                  000122da    00000050     Wq.obj (.text:wq_erase_4k)
+                  0001232a    0000004c     Timer.obj (.text:clk_20mhz)
+                  00012376    0000004a     Modos.obj (.text:modo_gps)
+                  000123c0    0000004a     Strings.obj (.text:str_hex32)
+                  0001240a    00000048     Lcd.obj (.text:lcd_aux)
+                  00012452    00000048     Lcd.obj (.text:lcd_delay)
+                  0001249a    00000046     Strings.obj (.text:str_hex8)
+                  000124e0    00000044     Strings.obj (.text:str_hex16)
+                  00012524    00000040     Serial.obj (.text:seri_cmdo_x)
+                  00012564    0000003e     rts430x_lc_rd_eabi.lib : asr32.asm.obj (.text:l_asr_const)
+                  000125a2    0000003e                            : lsl32.asm.obj (.text:l_lsl_const)
+                  000125e0    0000003e     Serial.obj (.text:rec_msg)
+                  0001261e    0000003c     Lcd.obj (.text:i2c_trancar)
+                  0001265a    0000003a     Wq.obj (.text:w25_manuf_dev_id)
+                  00012694    00000038     Lcd.obj (.text:lcd_presente)
+                  000126cc    00000038     Strings.obj (.text:str_cmp)
+                  00012704    00000036     Gprs.obj (.text:gprs_tira)
+                  0001273a    00000036     Gps.obj (.text:gps_tira)
+                  00012770    00000036     Serial.obj (.text:seri_tira)
+                  000127a6    00000034     Gps.obj (.text:copia_ate_virgula)
+                  000127da    00000034     Strings.obj (.text:str_maiusc)
+                  0001280e    00000030     Gprs.obj (.text:gprs_poe)
+                  0001283e    00000030     Gps.obj (.text:gps_config)
+                  0001286e    00000030     Gps.obj (.text:gps_poe)
+                  0001289e    00000030     Serial.obj (.text:seri_poe)
+                  000128ce    0000002e     Serial.obj (.text:seri_xereta)
+                  000128fc    0000002c     rts430x_lc_rd_eabi.lib : div16s.asm.obj (.text)
+                  00012928    0000002c     Wq.obj (.text:spi_config)
+                  00012954    0000002a     Lcd.obj (.text:i2c_teste_adr)
+                  0001297e    0000002a     Serial.obj (.text:seri_vazia)
+                  000129a8    00000028     Gprs.obj (.text:gprs_send_cmd)
+                  000129d0    00000028     Gprs.obj (.text:gprs_str)
+                  000129f8    00000028     Lcd.obj (.text:lcdb_data)
+                  00012a20    00000028     Lcd.obj (.text:lcdb_hora)
+                  00012a48    00000028     Serial.obj (.text:ser1_str)
+                  00012a70    00000028     Serial.obj (.text:seri_come_crlf)
+                  00012a98    00000024     rts430x_lc_rd_eabi.lib : copy_zero_init.c.obj (.text:decompress:ZI:__TI_zero_init_nomemset:__TI_zero_init_nomemset)
+                  00012abc    00000024     Strings.obj (.text:eh_hexa)
+                  00012ae0    00000024     Lcd.obj (.text:lcd_atualiza)
+                  00012b04    00000024     Lcd.obj (.text:lcdb_hex16)
+                  00012b28    00000024     rts430x_lc_rd_eabi.lib : mult32_f5hw.asm.obj (.text)
+                  00012b4c    00000020     Timer.obj (.text:delay_10ms)
+                  00012b6c    00000020     Strings.obj (.text:str_bcd8)
+                  00012b8c    0000001e     Serial.obj (.text:ser1_crlf)
+                  00012baa    0000001c     Estados.obj (.text:dormente)
+                  00012bc6    0000001c     Gprs.obj (.text:gprs_cheia)
+                  00012be2    0000001c     Gps.obj (.text:gps_cheia)
+                  00012bfe    0000001c     Serial.obj (.text:ser1_dec8unz)
+                  00012c1a    0000001c     Serial.obj (.text:seri_cheia)
+                  00012c36    0000001c     Wq.obj (.text:wq_ocupado)
+                  00012c52    0000001a     Wq.obj (.text:spi_transf)
+                  00012c6c    00000018     rts430x_lc_rd_eabi.lib : mult16_f5hw.asm.obj (.text)
+                  00012c84    00000018     Wq.obj (.text:wq_sr1_rd)
+                  00012c9c    00000018     Wq.obj (.text:wq_sr2_rd)
+                  00012cb4    00000016     Modos.obj (.text:modo_ser1)
+                  00012cca    00000016     rts430x_lc_rd_eabi.lib : div16u.asm.obj (.text)
+                  00012ce0    00000016     Serial.obj (.text:ser1_data_hora)
+                  00012cf6    00000016     Serial.obj (.text:ser1_dec16)
+                  00012d0c    00000016     Serial.obj (.text:ser1_dec8u)
+                  00012d22    00000016     Serial.obj (.text:ser1_hex32)
+                  00012d38    00000016     Serial.obj (.text:ser1_hex8)
+                  00012d4e    00000016     Serial.obj (.text:ser1_spc)
+                  00012d64    00000014     Estados.obj (.text:alerta1)
+                  00012d78    00000014     Estados.obj (.text:alerta2)
+                  00012d8c    00000014     Strings.obj (.text:eh_dec)
+                  00012da0    00000014     rts430x_lc_rd_eabi.lib : memcpy.c.obj (.text:memcpy)
+                  00012db4    00000014     Estados.obj (.text:suspeito)
+                  00012dc8    00000014     Timer.obj (.text:ta2_config)
+                  00012ddc    00000012     Strings.obj (.text:asc_nib)
+                  00012dee    00000012     rts430x_lc_rd_eabi.lib : copy_decompress_none.c.obj (.text:decompress:none:__TI_decompress_none)
+                  00012e00    00000012     Modos.obj (.text:modo_99)
+                  00012e12    00000012     Wq.obj (.text:wq_WEL)
+                  00012e24    00000010     Timer.obj (.text:crono_inic)
+                  00012e34    00000010     Wq.obj (.text:wq_wel)
+                  00012e44    0000000e     Modos.obj (.text:modo_0)
+                  00012e52    0000000e     Modos.obj (.text:modo_18)
+                  00012e60    0000000e     Modos.obj (.text:modo_2)
+                  00012e6e    0000000e     Modos.obj (.text:modo_3)
+                  00012e7c    0000000e     Modos.obj (.text:modo_4)
+                  00012e8a    0000000e     Modos.obj (.text:modo_5)
+                  00012e98    0000000e     Modos.obj (.text:modo_6)
+                  00012ea6    0000000e     Modos.obj (.text:modo_7)
+                  00012eb4    0000000e     Modos.obj (.text:modo_8)
+                  00012ec2    0000000c     Gprs.obj (.text:gprs_char)
+                  00012ece    0000000c     Serial.obj (.text:ser1_char)
+                  00012eda    0000000a     rts430x_lc_rd_eabi.lib : abs.c.obj (.text:abs)
+                  00012ee4    0000000a     Timer.obj (.text:crono_zera)
+                  00012eee    0000000a     Gprs.obj (.text:gprs_config)
+                  00012ef8    0000000a     Serial.obj (.text:seri_config)
+                  00012f02    00000008     Gpio.obj (.text:led_VD)
+                  00012f0a    00000008     Gpio.obj (.text:led_Vd)
+                  00012f12    00000008     Gpio.obj (.text:led_vd)
+                  00012f1a    00000008     Wq.obj (.text:wq_CS)
+                  00012f22    00000008     Wq.obj (.text:wq_cs)
+                  00012f2a    00000006     rts430x_lc_rd_eabi.lib : exit.c.obj (.text:abort)
+                  00012f30    00000006     Gpio.obj (.text:led_VM)
+                  00012f36    00000006     Gpio.obj (.text:led_Vm)
+                  00012f3c    00000006     Gpio.obj (.text:led_vm)
+                  00012f42    00000004     rts430x_lc_rd_eabi.lib : pre_init.c.obj (.text:_system_pre_init)
+                  00012f46    00000002                            : startup.c.obj (.text:_system_post_cinit)
 
 MODULE SUMMARY
 
        Module                       code    ro data   rw data
        ------                       ----    -------   -------
     .\
-       Modos.obj                    3784    666       0      
-       Puka.obj                     646     378       853    
+       Modos.obj                    3636    556       0      
+       Puka.obj                     646     378       900    
        Serial.obj                   1348    76        0      
        Lcd.obj                      1280    0         0      
        Strings.obj                  1080    0         0      
        Gps.obj                      998     74        1      
+       Estados.obj                  518     156       0      
        Gprs.obj                     590     68        0      
        Wq.obj                       552     0         0      
        Mpu.obj                      344     22        0      
@@ -419,7 +433,7 @@ MODULE SUMMARY
        Timer.obj                    168     2         0      
        Int.obj                      130     4         0      
     +--+----------------------------+-------+---------+---------+
-       Total:                       11476   1312      854    
+       Total:                       11846   1358      901    
                                                              
     C:\ti\ccs1250\ccs\tools\compiler\ti-cgt-msp430_21.6.1.LTS\lib\rts430x_lc_rd_eabi.lib
        copy_decompress_lzss.c.obj   118     0         0      
@@ -458,21 +472,21 @@ MODULE SUMMARY
        Total:                       584     32        0      
                                                              
        Stack:                       0       0         160    
-       Linker Generated:            0       187       0      
+       Linker Generated:            0       192       0      
     +--+----------------------------+-------+---------+---------+
-       Grand Total:                 12060   1531      1014   
+       Grand Total:                 12430   1582      1061   
 
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 00004b04 records: 2, size/record: 8, table size: 16
-	.data: load addr=00004a58, load size=00000099 bytes, run addr=000026ba, run size=0000009d bytes, compression=lzss
-	.bss: load addr=00004afe, load size=00000006 bytes, run addr=00002400, run size=000002b9 bytes, compression=zero_init
+__TI_cinit_table @ 00004b36 records: 2, size/record: 8, table size: 16
+	.data: load addr=00004a86, load size=0000009e bytes, run addr=000026d6, run size=000000b0 bytes, compression=lzss
+	.bss: load addr=00004b30, load size=00000006 bytes, run addr=00002400, run size=000002d5 bytes, compression=zero_init
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 00004af2 records: 3, size/record: 4, table size: 12
+__TI_handler_table @ 00004b24 records: 3, size/record: 4, table size: 12
 	index: 0, handler: __TI_zero_init
 	index: 1, handler: __TI_decompress_lzss
 	index: 2, handler: __TI_decompress_none
@@ -564,7 +578,7 @@ address   name
 00000732  ADC12MEM9                              
 00000733  ADC12MEM9_H                            
 00000732  ADC12MEM9_L                            
-00012db8  C$$EXIT                                
+00012f2a  C$$EXIT                                
 000008c0  CBCTL0                                 
 000008c1  CBCTL0_H                               
 000008c0  CBCTL0_L                               
@@ -1216,15 +1230,15 @@ address   name
 0000015c  WDTCTL_L                               
 00004400  __STACK_END                            
 000000a0  __STACK_SIZE                           
-00004b04  __TI_CINIT_Base                        
-00004b14  __TI_CINIT_Limit                       
-00004b14  __TI_CINIT_Warm                        
-00004af2  __TI_Handler_Table_Base                
-00004afe  __TI_Handler_Table_Limit               
+00004b36  __TI_CINIT_Base                        
+00004b46  __TI_CINIT_Limit                       
+00004b46  __TI_CINIT_Warm                        
+00004b24  __TI_Handler_Table_Base                
+00004b30  __TI_Handler_Table_Limit               
 0000453e  __TI_ISR_TRAP                          
-0001216c  __TI_auto_init_nobinit_nopinit_hold_wdt
-00011994  __TI_decompress_lzss                   
-00012c7c  __TI_decompress_none                   
+00012286  __TI_auto_init_nobinit_nopinit_hold_wdt
+00011aae  __TI_decompress_lzss                   
+00012dee  __TI_decompress_none                   
 0000ffd2  __TI_int41                             
 0000ffd4  __TI_int42                             
 0000ffd6  __TI_int43                             
@@ -1250,230 +1264,253 @@ address   name
 ffffffff  __TI_pprof_out_hndl                    
 ffffffff  __TI_prof_data_size                    
 ffffffff  __TI_prof_data_start                   
-0001297e  __TI_zero_init_nomemset                
+00012a98  __TI_zero_init_nomemset                
 ffffffff  __c_args__                             
-000127e2  __mspabi_divi                          
-00012b94  __mspabi_divu                          
-00012b36  __mspabi_mpyi_f5hw                     
-00012a0e  __mspabi_mpyl_f5hw                     
-000127e2  __mspabi_remi                          
-00012b94  __mspabi_remu                          
-000124c0  __mspabi_slll_1                        
-0001249c  __mspabi_slll_10                       
-00012498  __mspabi_slll_11                       
-00012494  __mspabi_slll_12                       
-00012490  __mspabi_slll_13                       
-0001248c  __mspabi_slll_14                       
-00012488  __mspabi_slll_15                       
-000124bc  __mspabi_slll_2                        
-000124b8  __mspabi_slll_3                        
-000124b4  __mspabi_slll_4                        
-000124b0  __mspabi_slll_5                        
-000124ac  __mspabi_slll_6                        
-000124a8  __mspabi_slll_7                        
-000124a4  __mspabi_slll_8                        
-000124a0  __mspabi_slll_9                        
-00012482  __mspabi_sral_1                        
-0001245e  __mspabi_sral_10                       
-0001245a  __mspabi_sral_11                       
-00012456  __mspabi_sral_12                       
-00012452  __mspabi_sral_13                       
-0001244e  __mspabi_sral_14                       
-0001244a  __mspabi_sral_15                       
-0001247e  __mspabi_sral_2                        
-0001247a  __mspabi_sral_3                        
-00012476  __mspabi_sral_4                        
-00012472  __mspabi_sral_5                        
-0001246e  __mspabi_sral_6                        
-0001246a  __mspabi_sral_7                        
-00012466  __mspabi_sral_8                        
-00012462  __mspabi_sral_9                        
+000128fc  __mspabi_divi                          
+00012cca  __mspabi_divu                          
+00012c6c  __mspabi_mpyi_f5hw                     
+00012b28  __mspabi_mpyl_f5hw                     
+000128fc  __mspabi_remi                          
+00012cca  __mspabi_remu                          
+000125da  __mspabi_slll_1                        
+000125b6  __mspabi_slll_10                       
+000125b2  __mspabi_slll_11                       
+000125ae  __mspabi_slll_12                       
+000125aa  __mspabi_slll_13                       
+000125a6  __mspabi_slll_14                       
+000125a2  __mspabi_slll_15                       
+000125d6  __mspabi_slll_2                        
+000125d2  __mspabi_slll_3                        
+000125ce  __mspabi_slll_4                        
+000125ca  __mspabi_slll_5                        
+000125c6  __mspabi_slll_6                        
+000125c2  __mspabi_slll_7                        
+000125be  __mspabi_slll_8                        
+000125ba  __mspabi_slll_9                        
+0001259c  __mspabi_sral_1                        
+00012578  __mspabi_sral_10                       
+00012574  __mspabi_sral_11                       
+00012570  __mspabi_sral_12                       
+0001256c  __mspabi_sral_13                       
+00012568  __mspabi_sral_14                       
+00012564  __mspabi_sral_15                       
+00012598  __mspabi_sral_2                        
+00012594  __mspabi_sral_3                        
+00012590  __mspabi_sral_4                        
+0001258c  __mspabi_sral_5                        
+00012588  __mspabi_sral_6                        
+00012584  __mspabi_sral_7                        
+00012580  __mspabi_sral_8                        
+0001257c  __mspabi_sral_9                        
 000044de  _c_int00_noargs                        
 0000fffe  _reset_vector                          
 00004360  _stack                                 
-00012dd4  _system_post_cinit                     
-00012dd0  _system_pre_init                       
-00012db8  abort                                  
-00012d68  abs                                    
-00012c6a  asc_nib                                
-00012210  clk_20mhz                              
-000026a0  cont_c_seg                             
-000026a1  cont_d_seg                             
-000026a2  cont_min                               
-000026a3  cont_seg                               
-0001268c  copia_ate_virgula                      
-00002690  crono_cont                             
-00012cb2  crono_inic                             
-00012d72  crono_zera                             
-00012a32  delay_10ms                             
-00012c2e  eh_dec                                 
-000129a2  eh_hexa                                
-000026a4  flag_c_seg                             
-000026a5  flag_d_seg                             
-000026a6  flag_seg                               
-0001205a  gpio_config                            
-00012d50  gprs_char                              
-00012a90  gprs_cheia                             
-00012d7c  gprs_config                            
+00012f46  _system_post_cinit                     
+00012f42  _system_pre_init                       
+00012f2a  abort                                  
+00012eda  abs                                    
+00002784  alerta                                 
+00012d64  alerta1                                
+00012d78  alerta2                                
+00012ddc  asc_nib                                
+0000269e  ax                                     
+000026a0  ay                                     
+000026a2  az                                     
+0001232a  clk_20mhz                              
+000026bc  cont_c_seg                             
+000026bd  cont_d_seg                             
+000026be  cont_min                               
+000026bf  cont_seg                               
+000127a6  copia_ate_virgula                      
+000026a4  crono_cont                             
+00012e24  crono_inic                             
+00012ee4  crono_zera                             
+00012b4c  delay_10ms                             
+00012baa  dormente                               
+00012d8c  eh_dec                                 
+00012abc  eh_hexa                                
+00002774  estado                                 
+000026c0  flag_c_seg                             
+000026c1  flag_d_seg                             
+000026c2  flag_seg                               
+00012174  gpio_config                            
+00012ec2  gprs_char                              
+00012bc6  gprs_cheia                             
+00012eee  gprs_config                            
 0000248a  gprs_fila                              
-00002692  gprs_pin                               
-000126f4  gprs_poe                               
-00002694  gprs_pout                              
-0001288e  gprs_send_cmd                          
-00011cbe  gprs_send_msg                          
-000128b6  gprs_str                               
-000125ea  gprs_tira                              
-00010f50  gps_busca_gprmc                        
-00012aac  gps_cheia                              
-00012724  gps_config                             
-000026a7  gps_dado                               
-00002688  gps_data                               
-00011a0a  gps_dump                               
-00002696  gps_estado                             
-000026a8  gps_ew                                 
+000026a6  gprs_pin                               
+0001280e  gprs_poe                               
+000026a8  gprs_pout                              
+000129a8  gprs_send_cmd                          
+00011dd8  gprs_send_msg                          
+000129d0  gprs_str                               
+00012704  gprs_tira                              
+0001106a  gps_busca_gprmc                        
+00012be2  gps_cheia                              
+0001283e  gps_config                             
+000026c3  gps_dado                               
+00002696  gps_data                               
+00011b24  gps_dump                               
+000026aa  gps_estado                             
+000026c4  gps_ew                                 
 0000250a  gps_fila                               
 0000260a  gps_gprmc                              
-00010b44  gps_gprmc_extrai                       
-000026a9  gps_gprmc_novo                         
-0000270e  gps_gprmc_ok                           
-00002664  gps_hora                               
-00002670  gps_lat                                
-0000267c  gps_long                               
-000026aa  gps_ns                                 
-00002698  gps_pin                                
-00012754  gps_poe                                
-0000269a  gps_pout                               
-000026ab  gps_sat                                
-00002751  gps_st                                 
-00012620  gps_tira                               
-000026ac  gps_tranca                             
-00011f2e  i2c_config                             
-0001283a  i2c_teste_adr                          
-000026ad  i2c_tranca                             
-00012504  i2c_trancar                            
+00010c5e  gps_gprmc_extrai                       
+000026c5  gps_gprmc_novo                         
+0000272a  gps_gprmc_ok                           
+00002672  gps_hora                               
+0000267e  gps_lat                                
+0000268a  gps_long                               
+000026c6  gps_ns                                 
+000026ac  gps_pin                                
+0001286e  gps_poe                                
+000026ae  gps_pout                               
+000026c7  gps_sat                                
+0000276e  gps_st                                 
+0001273a  gps_tira                               
+000026c8  gps_tranca                             
+000026b0  gx                                     
+000026b2  gy                                     
+000026b4  gz                                     
+00012048  i2c_config                             
+00012954  i2c_teste_adr                          
+000026c9  i2c_tranca                             
+0001261e  i2c_trancar                            
 0000450c  isr_dma                                
 000044ba  isr_p1                                 
 00004470  isr_ta0ccr0                            
 00004530  isr_ta1ifg                             
 00004400  isr_ta2_0                              
-000026ae  lcd_adr                                
-000129c6  lcd_atualiza                           
-000122f0  lcd_aux                                
+000026ca  lcd_adr                                
+00012ae0  lcd_atualiza                           
+0001240a  lcd_aux                                
 00002400  lcd_buf                                
-00012338  lcd_delay                              
-000114f0  lcd_dma_config                         
-000026af  lcd_flag                               
-00011384  lcd_inic                               
-0001257a  lcd_presente                           
-000026b0  lcd_tem                                
-00011c50  lcdb_apaga                             
-00011d2a  lcdb_char                              
-000128de  lcdb_data                              
-000129ea  lcdb_hex16                             
-00012906  lcdb_hora                              
-0001159e  lcdb_str                               
-00012d90  led_VD                                 
-00012dbe  led_VM                                 
-00012d98  led_Vd                                 
-00012dc4  led_Vm                                 
-00012da0  led_vd                                 
-00012dca  led_vm                                 
-000104c4  main                                   
-00012c42  memcpy                                 
-000026b1  modo                                   
-00012cd2  modo_0                                 
-00010000  modo_1                                 
-00012ce0  modo_18                                
-0001143c  modo_19                                
-00012cee  modo_2                                 
-00011f92  modo_20                                
-000106e4  modo_26                                
-00012cfc  modo_3                                 
-00012d0a  modo_4                                 
-00012d18  modo_5                                 
-00012d26  modo_6                                 
-00012d34  modo_7                                 
-00012d42  modo_8                                 
-00011766  modo_9                                 
-00012c8e  modo_99                                
-00011116  modo_gprmc                             
-0001225c  modo_gps                               
-000120b8  modo_lcd                               
-00011036  modo_leds                              
-000109ee  modo_mpu                               
-0001088e  modo_rtc                               
-00012b7e  modo_ser1                              
-00010d76  modo_sw                                
-0001026c  modo_wq                                
-000026ba  modos_lista                            
-00012112  mpu_config                             
-00011636  mpu_rd_vet                             
-000026b2  mpu_tem                                
-00011dfc  mpu_wr                                 
-00002752  numero_telefone                        
-000124c6  rec_msg                                
-000116ce  rtc_rd_vet                             
-00011a80  rtc_wr_vet                             
-00011e62  sel_modo                               
-00010e68  ser0_config                            
-00012d5c  ser1_char                              
-00010c7a  ser1_config                            
-00012a72  ser1_crlf                              
-00012baa  ser1_data_hora                         
-00012bc0  ser1_dec16                             
-00012bd6  ser1_dec8u                             
-00012ac8  ser1_dec8unz                           
-00012bec  ser1_hex32                             
-00012c02  ser1_hex8                              
-00011892  ser1_linha                             
-00012c18  ser1_spc                               
-0001292e  ser1_str                               
-00012ae4  seri_cheia                             
-000112c8  seri_cmdo                              
-0001240a  seri_cmdo_x                            
-00012956  seri_come_crlf                         
-00012d86  seri_config                            
-00011af6  seri_dump                              
+00012452  lcd_delay                              
+0001160a  lcd_dma_config                         
+000026cb  lcd_flag                               
+0001149e  lcd_inic                               
+00012694  lcd_presente                           
+000026cc  lcd_tem                                
+00011d6a  lcdb_apaga                             
+00011e44  lcdb_char                              
+000129f8  lcdb_data                              
+00012b04  lcdb_hex16                             
+00012a20  lcdb_hora                              
+000116b8  lcdb_str                               
+00012f02  led_VD                                 
+00012f30  led_VM                                 
+00012f0a  led_Vd                                 
+00012f36  led_Vm                                 
+00012f12  led_vd                                 
+00012f3c  led_vm                                 
+00010258  main                                   
+00002776  maiorx                                 
+0000277a  maiory                                 
+0000277e  maiorz                                 
+00012da0  memcpy                                 
+00002778  menorx                                 
+0000277c  menory                                 
+00002780  menorz                                 
+000026cd  modo                                   
+00012e44  modo_0                                 
+00010478  modo_1                                 
+00012e52  modo_18                                
+00011556  modo_19                                
+00012e60  modo_2                                 
+000120ac  modo_20                                
+000107fe  modo_26                                
+00012e6e  modo_3                                 
+00012e7c  modo_4                                 
+00012e8a  modo_5                                 
+00012e98  modo_6                                 
+00012ea6  modo_7                                 
+00012eb4  modo_8                                 
+00011880  modo_9                                 
+00012e00  modo_99                                
+00011230  modo_gprmc                             
+00012376  modo_gps                               
+000121d2  modo_lcd                               
+00011150  modo_leds                              
+00010b08  modo_mpu                               
+000109a8  modo_rtc                               
+00012cb4  modo_ser1                              
+00010e90  modo_sw                                
+00010000  modo_wq                                
+000026d6  modos_lista                            
+0001222c  mpu_config                             
+00011750  mpu_rd_vet                             
+000026ce  mpu_tem                                
+00011f16  mpu_wr                                 
+0000276f  numero_telefone                        
+000125e0  rec_msg                                
+00002782  roubado                                
+000117e8  rtc_rd_vet                             
+00011b9a  rtc_wr_vet                             
+00011f7c  sel_modo                               
+00010f82  ser0_config                            
+00012ece  ser1_char                              
+00010d94  ser1_config                            
+00012b8c  ser1_crlf                              
+00012ce0  ser1_data_hora                         
+00012cf6  ser1_dec16                             
+00012d0c  ser1_dec8u                             
+00012bfe  ser1_dec8unz                           
+00012d22  ser1_hex32                             
+00012d38  ser1_hex8                              
+000119ac  ser1_linha                             
+00012d4e  ser1_spc                               
+00012a48  ser1_str                               
+00012c1a  seri_cheia                             
+000113e2  seri_cmdo                              
+00012524  seri_cmdo_x                            
+00012a70  seri_come_crlf                         
+00012ef8  seri_config                            
+00011c10  seri_dump                              
 0000258a  seri_fila                              
-0000269c  seri_pin                               
-00012784  seri_poe                               
-0000269e  seri_pout                              
-00012656  seri_tira                              
-00012864  seri_vazia                             
-000127b4  seri_xereta                            
-0001280e  spi_config                             
-00012b1c  spi_transf                             
-000111f0  str_2_num                              
-00012a52  str_bcd8                               
-000125b2  str_cmp                                
-00011b6c  str_data_hora                          
-0001191a  str_dec16                              
-00011ff6  str_dec8u                              
-000123c6  str_hex16                              
-000122a6  str_hex32                              
-00012380  str_hex8                               
-000126c0  str_maiusc                             
-00011ec8  str_rmvz_u                             
-000026b3  sw1                                    
-000026b4  sw1_cont                               
-000026b5  sw1_estado                             
-000026b6  sw2                                    
-000026b7  sw2_cont                               
-000026b8  sw2_estado                             
-000117fc  sw_monitorar                           
-00012c56  ta2_config                             
+000026b6  seri_pin                               
+0001289e  seri_poe                               
+000026b8  seri_pout                              
+00012770  seri_tira                              
+0001297e  seri_vazia                             
+000128ce  seri_xereta                            
+00002773  serialMSG                              
+00012928  spi_config                             
+00012c52  spi_transf                             
+0001130a  str_2_num                              
+00012b6c  str_bcd8                               
+000126cc  str_cmp                                
+00011c86  str_data_hora                          
+00011a34  str_dec16                              
+00012110  str_dec8u                              
+000124e0  str_hex16                              
+000123c0  str_hex32                              
+0001249a  str_hex8                               
+000127da  str_maiusc                             
+00011fe2  str_rmvz_u                             
+00012db4  suspeito                               
+000026cf  sw1                                    
+000026d0  sw1_cont                               
+000026d1  sw1_estado                             
+000026d2  sw2                                    
+000026d3  sw2_cont                               
+000026d4  sw2_estado                             
+00011916  sw_monitorar                           
+00012dc8  ta2_config                             
+000026ba  tp                                     
 0000451e  usci_a1_int                            
-00012540  w25_manuf_dev_id                       
-00012da8  wq_CS                                  
-00012ca0  wq_WEL                                 
-00012db0  wq_cs                                  
-000121c0  wq_erase_4k                            
-00012b00  wq_ocupado                             
-00011bde  wq_rd_blk                              
-00012b4e  wq_sr1_rd                              
-00012b66  wq_sr2_rd                              
-00012cc2  wq_wel                                 
-00011d94  wq_wr_blk                              
+00002664  vetor                                  
+00010650  vigilia                                
+0001265a  w25_manuf_dev_id                       
+00012f1a  wq_CS                                  
+00012e12  wq_WEL                                 
+00012f22  wq_cs                                  
+000122da  wq_erase_4k                            
+00012c36  wq_ocupado                             
+00011cf8  wq_rd_blk                              
+00012c84  wq_sr1_rd                              
+00012c9c  wq_sr2_rd                              
+00012e34  wq_wel                                 
+00011eae  wq_wr_blk                              
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -2216,47 +2253,65 @@ address   name
 0000250a  gps_fila                               
 0000258a  seri_fila                              
 0000260a  gps_gprmc                              
-00002664  gps_hora                               
-00002670  gps_lat                                
-0000267c  gps_long                               
-00002688  gps_data                               
-00002690  crono_cont                             
-00002692  gprs_pin                               
-00002694  gprs_pout                              
-00002696  gps_estado                             
-00002698  gps_pin                                
-0000269a  gps_pout                               
-0000269c  seri_pin                               
-0000269e  seri_pout                              
-000026a0  cont_c_seg                             
-000026a1  cont_d_seg                             
-000026a2  cont_min                               
-000026a3  cont_seg                               
-000026a4  flag_c_seg                             
-000026a5  flag_d_seg                             
-000026a6  flag_seg                               
-000026a7  gps_dado                               
-000026a8  gps_ew                                 
-000026a9  gps_gprmc_novo                         
-000026aa  gps_ns                                 
-000026ab  gps_sat                                
-000026ac  gps_tranca                             
-000026ad  i2c_tranca                             
-000026ae  lcd_adr                                
-000026af  lcd_flag                               
-000026b0  lcd_tem                                
-000026b1  modo                                   
-000026b2  mpu_tem                                
-000026b3  sw1                                    
-000026b4  sw1_cont                               
-000026b5  sw1_estado                             
-000026b6  sw2                                    
-000026b7  sw2_cont                               
-000026b8  sw2_estado                             
-000026ba  modos_lista                            
-0000270e  gps_gprmc_ok                           
-00002751  gps_st                                 
-00002752  numero_telefone                        
+00002664  vetor                                  
+00002672  gps_hora                               
+0000267e  gps_lat                                
+0000268a  gps_long                               
+00002696  gps_data                               
+0000269e  ax                                     
+000026a0  ay                                     
+000026a2  az                                     
+000026a4  crono_cont                             
+000026a6  gprs_pin                               
+000026a8  gprs_pout                              
+000026aa  gps_estado                             
+000026ac  gps_pin                                
+000026ae  gps_pout                               
+000026b0  gx                                     
+000026b2  gy                                     
+000026b4  gz                                     
+000026b6  seri_pin                               
+000026b8  seri_pout                              
+000026ba  tp                                     
+000026bc  cont_c_seg                             
+000026bd  cont_d_seg                             
+000026be  cont_min                               
+000026bf  cont_seg                               
+000026c0  flag_c_seg                             
+000026c1  flag_d_seg                             
+000026c2  flag_seg                               
+000026c3  gps_dado                               
+000026c4  gps_ew                                 
+000026c5  gps_gprmc_novo                         
+000026c6  gps_ns                                 
+000026c7  gps_sat                                
+000026c8  gps_tranca                             
+000026c9  i2c_tranca                             
+000026ca  lcd_adr                                
+000026cb  lcd_flag                               
+000026cc  lcd_tem                                
+000026cd  modo                                   
+000026ce  mpu_tem                                
+000026cf  sw1                                    
+000026d0  sw1_cont                               
+000026d1  sw1_estado                             
+000026d2  sw2                                    
+000026d3  sw2_cont                               
+000026d4  sw2_estado                             
+000026d6  modos_lista                            
+0000272a  gps_gprmc_ok                           
+0000276e  gps_st                                 
+0000276f  numero_telefone                        
+00002773  serialMSG                              
+00002774  estado                                 
+00002776  maiorx                                 
+00002778  menorx                                 
+0000277a  maiory                                 
+0000277c  menory                                 
+0000277e  maiorz                                 
+00002780  menorz                                 
+00002782  roubado                                
+00002784  alerta                                 
 00004360  _stack                                 
 00004400  __STACK_END                            
 00004400  isr_ta2_0                              
@@ -2268,11 +2323,11 @@ address   name
 0000451e  usci_a1_int                            
 00004530  isr_ta1ifg                             
 0000453e  __TI_ISR_TRAP                          
-00004af2  __TI_Handler_Table_Base                
-00004afe  __TI_Handler_Table_Limit               
-00004b04  __TI_CINIT_Base                        
-00004b14  __TI_CINIT_Limit                       
-00004b14  __TI_CINIT_Warm                        
+00004b24  __TI_Handler_Table_Base                
+00004b30  __TI_Handler_Table_Limit               
+00004b36  __TI_CINIT_Base                        
+00004b46  __TI_CINIT_Limit                       
+00004b46  __TI_CINIT_Warm                        
 0000ffd2  __TI_int41                             
 0000ffd4  __TI_int42                             
 0000ffd6  __TI_int43                             
@@ -2296,181 +2351,186 @@ address   name
 0000fffa  __TI_int61                             
 0000fffc  __TI_int62                             
 0000fffe  _reset_vector                          
-00010000  modo_1                                 
-0001026c  modo_wq                                
-000104c4  main                                   
-000106e4  modo_26                                
-0001088e  modo_rtc                               
-000109ee  modo_mpu                               
-00010b44  gps_gprmc_extrai                       
-00010c7a  ser1_config                            
-00010d76  modo_sw                                
-00010e68  ser0_config                            
-00010f50  gps_busca_gprmc                        
-00011036  modo_leds                              
-00011116  modo_gprmc                             
-000111f0  str_2_num                              
-000112c8  seri_cmdo                              
-00011384  lcd_inic                               
-0001143c  modo_19                                
-000114f0  lcd_dma_config                         
-0001159e  lcdb_str                               
-00011636  mpu_rd_vet                             
-000116ce  rtc_rd_vet                             
-00011766  modo_9                                 
-000117fc  sw_monitorar                           
-00011892  ser1_linha                             
-0001191a  str_dec16                              
-00011994  __TI_decompress_lzss                   
-00011a0a  gps_dump                               
-00011a80  rtc_wr_vet                             
-00011af6  seri_dump                              
-00011b6c  str_data_hora                          
-00011bde  wq_rd_blk                              
-00011c50  lcdb_apaga                             
-00011cbe  gprs_send_msg                          
-00011d2a  lcdb_char                              
-00011d94  wq_wr_blk                              
-00011dfc  mpu_wr                                 
-00011e62  sel_modo                               
-00011ec8  str_rmvz_u                             
-00011f2e  i2c_config                             
-00011f92  modo_20                                
-00011ff6  str_dec8u                              
-0001205a  gpio_config                            
-000120b8  modo_lcd                               
-00012112  mpu_config                             
-0001216c  __TI_auto_init_nobinit_nopinit_hold_wdt
-000121c0  wq_erase_4k                            
-00012210  clk_20mhz                              
-0001225c  modo_gps                               
-000122a6  str_hex32                              
-000122f0  lcd_aux                                
-00012338  lcd_delay                              
-00012380  str_hex8                               
-000123c6  str_hex16                              
-0001240a  seri_cmdo_x                            
-0001244a  __mspabi_sral_15                       
-0001244e  __mspabi_sral_14                       
-00012452  __mspabi_sral_13                       
-00012456  __mspabi_sral_12                       
-0001245a  __mspabi_sral_11                       
-0001245e  __mspabi_sral_10                       
-00012462  __mspabi_sral_9                        
-00012466  __mspabi_sral_8                        
-0001246a  __mspabi_sral_7                        
-0001246e  __mspabi_sral_6                        
-00012472  __mspabi_sral_5                        
-00012476  __mspabi_sral_4                        
-0001247a  __mspabi_sral_3                        
-0001247e  __mspabi_sral_2                        
-00012482  __mspabi_sral_1                        
-00012488  __mspabi_slll_15                       
-0001248c  __mspabi_slll_14                       
-00012490  __mspabi_slll_13                       
-00012494  __mspabi_slll_12                       
-00012498  __mspabi_slll_11                       
-0001249c  __mspabi_slll_10                       
-000124a0  __mspabi_slll_9                        
-000124a4  __mspabi_slll_8                        
-000124a8  __mspabi_slll_7                        
-000124ac  __mspabi_slll_6                        
-000124b0  __mspabi_slll_5                        
-000124b4  __mspabi_slll_4                        
-000124b8  __mspabi_slll_3                        
-000124bc  __mspabi_slll_2                        
-000124c0  __mspabi_slll_1                        
-000124c6  rec_msg                                
-00012504  i2c_trancar                            
-00012540  w25_manuf_dev_id                       
-0001257a  lcd_presente                           
-000125b2  str_cmp                                
-000125ea  gprs_tira                              
-00012620  gps_tira                               
-00012656  seri_tira                              
-0001268c  copia_ate_virgula                      
-000126c0  str_maiusc                             
-000126f4  gprs_poe                               
-00012724  gps_config                             
-00012754  gps_poe                                
-00012784  seri_poe                               
-000127b4  seri_xereta                            
-000127e2  __mspabi_divi                          
-000127e2  __mspabi_remi                          
-0001280e  spi_config                             
-0001283a  i2c_teste_adr                          
-00012864  seri_vazia                             
-0001288e  gprs_send_cmd                          
-000128b6  gprs_str                               
-000128de  lcdb_data                              
-00012906  lcdb_hora                              
-0001292e  ser1_str                               
-00012956  seri_come_crlf                         
-0001297e  __TI_zero_init_nomemset                
-000129a2  eh_hexa                                
-000129c6  lcd_atualiza                           
-000129ea  lcdb_hex16                             
-00012a0e  __mspabi_mpyl_f5hw                     
-00012a32  delay_10ms                             
-00012a52  str_bcd8                               
-00012a72  ser1_crlf                              
-00012a90  gprs_cheia                             
-00012aac  gps_cheia                              
-00012ac8  ser1_dec8unz                           
-00012ae4  seri_cheia                             
-00012b00  wq_ocupado                             
-00012b1c  spi_transf                             
-00012b36  __mspabi_mpyi_f5hw                     
-00012b4e  wq_sr1_rd                              
-00012b66  wq_sr2_rd                              
-00012b7e  modo_ser1                              
-00012b94  __mspabi_divu                          
-00012b94  __mspabi_remu                          
-00012baa  ser1_data_hora                         
-00012bc0  ser1_dec16                             
-00012bd6  ser1_dec8u                             
-00012bec  ser1_hex32                             
-00012c02  ser1_hex8                              
-00012c18  ser1_spc                               
-00012c2e  eh_dec                                 
-00012c42  memcpy                                 
-00012c56  ta2_config                             
-00012c6a  asc_nib                                
-00012c7c  __TI_decompress_none                   
-00012c8e  modo_99                                
-00012ca0  wq_WEL                                 
-00012cb2  crono_inic                             
-00012cc2  wq_wel                                 
-00012cd2  modo_0                                 
-00012ce0  modo_18                                
-00012cee  modo_2                                 
-00012cfc  modo_3                                 
-00012d0a  modo_4                                 
-00012d18  modo_5                                 
-00012d26  modo_6                                 
-00012d34  modo_7                                 
-00012d42  modo_8                                 
-00012d50  gprs_char                              
-00012d5c  ser1_char                              
-00012d68  abs                                    
-00012d72  crono_zera                             
-00012d7c  gprs_config                            
-00012d86  seri_config                            
-00012d90  led_VD                                 
-00012d98  led_Vd                                 
-00012da0  led_vd                                 
-00012da8  wq_CS                                  
-00012db0  wq_cs                                  
-00012db8  C$$EXIT                                
-00012db8  abort                                  
-00012dbe  led_VM                                 
-00012dc4  led_Vm                                 
-00012dca  led_vm                                 
-00012dd0  _system_pre_init                       
-00012dd4  _system_post_cinit                     
+00010000  modo_wq                                
+00010258  main                                   
+00010478  modo_1                                 
+00010650  vigilia                                
+000107fe  modo_26                                
+000109a8  modo_rtc                               
+00010b08  modo_mpu                               
+00010c5e  gps_gprmc_extrai                       
+00010d94  ser1_config                            
+00010e90  modo_sw                                
+00010f82  ser0_config                            
+0001106a  gps_busca_gprmc                        
+00011150  modo_leds                              
+00011230  modo_gprmc                             
+0001130a  str_2_num                              
+000113e2  seri_cmdo                              
+0001149e  lcd_inic                               
+00011556  modo_19                                
+0001160a  lcd_dma_config                         
+000116b8  lcdb_str                               
+00011750  mpu_rd_vet                             
+000117e8  rtc_rd_vet                             
+00011880  modo_9                                 
+00011916  sw_monitorar                           
+000119ac  ser1_linha                             
+00011a34  str_dec16                              
+00011aae  __TI_decompress_lzss                   
+00011b24  gps_dump                               
+00011b9a  rtc_wr_vet                             
+00011c10  seri_dump                              
+00011c86  str_data_hora                          
+00011cf8  wq_rd_blk                              
+00011d6a  lcdb_apaga                             
+00011dd8  gprs_send_msg                          
+00011e44  lcdb_char                              
+00011eae  wq_wr_blk                              
+00011f16  mpu_wr                                 
+00011f7c  sel_modo                               
+00011fe2  str_rmvz_u                             
+00012048  i2c_config                             
+000120ac  modo_20                                
+00012110  str_dec8u                              
+00012174  gpio_config                            
+000121d2  modo_lcd                               
+0001222c  mpu_config                             
+00012286  __TI_auto_init_nobinit_nopinit_hold_wdt
+000122da  wq_erase_4k                            
+0001232a  clk_20mhz                              
+00012376  modo_gps                               
+000123c0  str_hex32                              
+0001240a  lcd_aux                                
+00012452  lcd_delay                              
+0001249a  str_hex8                               
+000124e0  str_hex16                              
+00012524  seri_cmdo_x                            
+00012564  __mspabi_sral_15                       
+00012568  __mspabi_sral_14                       
+0001256c  __mspabi_sral_13                       
+00012570  __mspabi_sral_12                       
+00012574  __mspabi_sral_11                       
+00012578  __mspabi_sral_10                       
+0001257c  __mspabi_sral_9                        
+00012580  __mspabi_sral_8                        
+00012584  __mspabi_sral_7                        
+00012588  __mspabi_sral_6                        
+0001258c  __mspabi_sral_5                        
+00012590  __mspabi_sral_4                        
+00012594  __mspabi_sral_3                        
+00012598  __mspabi_sral_2                        
+0001259c  __mspabi_sral_1                        
+000125a2  __mspabi_slll_15                       
+000125a6  __mspabi_slll_14                       
+000125aa  __mspabi_slll_13                       
+000125ae  __mspabi_slll_12                       
+000125b2  __mspabi_slll_11                       
+000125b6  __mspabi_slll_10                       
+000125ba  __mspabi_slll_9                        
+000125be  __mspabi_slll_8                        
+000125c2  __mspabi_slll_7                        
+000125c6  __mspabi_slll_6                        
+000125ca  __mspabi_slll_5                        
+000125ce  __mspabi_slll_4                        
+000125d2  __mspabi_slll_3                        
+000125d6  __mspabi_slll_2                        
+000125da  __mspabi_slll_1                        
+000125e0  rec_msg                                
+0001261e  i2c_trancar                            
+0001265a  w25_manuf_dev_id                       
+00012694  lcd_presente                           
+000126cc  str_cmp                                
+00012704  gprs_tira                              
+0001273a  gps_tira                               
+00012770  seri_tira                              
+000127a6  copia_ate_virgula                      
+000127da  str_maiusc                             
+0001280e  gprs_poe                               
+0001283e  gps_config                             
+0001286e  gps_poe                                
+0001289e  seri_poe                               
+000128ce  seri_xereta                            
+000128fc  __mspabi_divi                          
+000128fc  __mspabi_remi                          
+00012928  spi_config                             
+00012954  i2c_teste_adr                          
+0001297e  seri_vazia                             
+000129a8  gprs_send_cmd                          
+000129d0  gprs_str                               
+000129f8  lcdb_data                              
+00012a20  lcdb_hora                              
+00012a48  ser1_str                               
+00012a70  seri_come_crlf                         
+00012a98  __TI_zero_init_nomemset                
+00012abc  eh_hexa                                
+00012ae0  lcd_atualiza                           
+00012b04  lcdb_hex16                             
+00012b28  __mspabi_mpyl_f5hw                     
+00012b4c  delay_10ms                             
+00012b6c  str_bcd8                               
+00012b8c  ser1_crlf                              
+00012baa  dormente                               
+00012bc6  gprs_cheia                             
+00012be2  gps_cheia                              
+00012bfe  ser1_dec8unz                           
+00012c1a  seri_cheia                             
+00012c36  wq_ocupado                             
+00012c52  spi_transf                             
+00012c6c  __mspabi_mpyi_f5hw                     
+00012c84  wq_sr1_rd                              
+00012c9c  wq_sr2_rd                              
+00012cb4  modo_ser1                              
+00012cca  __mspabi_divu                          
+00012cca  __mspabi_remu                          
+00012ce0  ser1_data_hora                         
+00012cf6  ser1_dec16                             
+00012d0c  ser1_dec8u                             
+00012d22  ser1_hex32                             
+00012d38  ser1_hex8                              
+00012d4e  ser1_spc                               
+00012d64  alerta1                                
+00012d78  alerta2                                
+00012d8c  eh_dec                                 
+00012da0  memcpy                                 
+00012db4  suspeito                               
+00012dc8  ta2_config                             
+00012ddc  asc_nib                                
+00012dee  __TI_decompress_none                   
+00012e00  modo_99                                
+00012e12  wq_WEL                                 
+00012e24  crono_inic                             
+00012e34  wq_wel                                 
+00012e44  modo_0                                 
+00012e52  modo_18                                
+00012e60  modo_2                                 
+00012e6e  modo_3                                 
+00012e7c  modo_4                                 
+00012e8a  modo_5                                 
+00012e98  modo_6                                 
+00012ea6  modo_7                                 
+00012eb4  modo_8                                 
+00012ec2  gprs_char                              
+00012ece  ser1_char                              
+00012eda  abs                                    
+00012ee4  crono_zera                             
+00012eee  gprs_config                            
+00012ef8  seri_config                            
+00012f02  led_VD                                 
+00012f0a  led_Vd                                 
+00012f12  led_vd                                 
+00012f1a  wq_CS                                  
+00012f22  wq_cs                                  
+00012f2a  C$$EXIT                                
+00012f2a  abort                                  
+00012f30  led_VM                                 
+00012f36  led_Vm                                 
+00012f3c  led_vm                                 
+00012f42  _system_pre_init                       
+00012f46  _system_post_cinit                     
 ffffffff  __TI_pprof_out_hndl                    
 ffffffff  __TI_prof_data_size                    
 ffffffff  __TI_prof_data_start                   
 ffffffff  __c_args__                             
 
-[992 symbols]
+[1015 symbols]
