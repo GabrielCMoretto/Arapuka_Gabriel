@@ -12,8 +12,9 @@ void rtc_wr_vet(char reg, char *vt, char qtd);
 void rtc_rd_vet(char reg, char *vt, char qtd);
 char rtc_rd(char reg);
 void rtc_wr(char reg, char dado);
+void rtc_estado();
 
-
-
+extern volatile char rtc_vetor[7];
+extern volatile char rtc_msg[18];
 
 #endif /* RTC_H_ */

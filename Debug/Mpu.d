@@ -11,6 +11,7 @@ Mpu.obj: ../Timer.h
 Mpu.obj: ../Lcd.h
 Mpu.obj: ../Serial.h
 Mpu.obj: ../Mpu.h
+Mpu.obj: ../Strings.h
 
 ../Mpu.c:
 
@@ -33,4 +34,6 @@ C:/ti/ccs1250/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/intrinsics_leg
 ../Serial.h:
 
 ../Mpu.h:
+
+../Strings.h:
 

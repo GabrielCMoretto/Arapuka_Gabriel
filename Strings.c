@@ -465,4 +465,33 @@ void str_maiusc(char *vt){
     i++;
   }
 }
+////////////////////////////////////////////////// Transforma inteiro em char /////////////////////////////////////////
+void IntToChar(int number, char *buffer){
+    int i = 0, y=0;
+    int isNegative = 0;
+    char auxbuff[5];
+
+    // Verifica se o número é negativo
+    if (number < 0) {
+        isNegative = 1;
+        number = - number; // Torna o número positivo para a conversão
+    }
+
+    // Converte cada dígito para um caractere
+    do {
+        auxbuff[i++] = number % 10 + '0'; // Converte o dígito para o caractere ASCII
+        number /= 10;
+    } while (number > 0);
+
+    // Adiciona sinal negativo, se necessário
+    if (isNegative) {
+        auxbuff[i++] = '-';
+    }
+
+    i--;                            //para tirar o i =='\0' do fim
+    while(i>-1){
+        buffer[y++] = auxbuff[i--];
+    }
+    buffer[y] = '\0'; // Termina a string com o caractere nulo
+}
 

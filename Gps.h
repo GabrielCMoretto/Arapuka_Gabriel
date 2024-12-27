@@ -26,6 +26,12 @@ extern volatile char gps_long[12]; //dddmm.mmmmm0
 extern volatile char gps_ew;       //(E/W) Latitude
 extern volatile char gps_gprmc[90];//$GPRMC receber os dados para extrair parâmetros
 
+extern volatile char gps_msg[22];
+extern float vol_lat, vol_long;
+extern volatile char gps_ew2;
+extern volatile long int menorlatitude, maiorlatitude, menorlongitude, maiorlongitude;
+extern volatile long int lat, lataux, longt, longtaux;
+
 void copia_ate_virgula(char *ix, char *vt);
 void gps_gprmc_extrai(void);
 void gps_gprmc_busca(char dado);
@@ -36,11 +42,12 @@ char gps_poe(char cha);
 void gps_cheia(void);
 char gps_tira(char *cha);
 void gps_dump(void);
-
-
-
-
-
+void gps_estado_modo();
+char calculo_GPRMC(void);
+void separa_algarismos_gps_f(char vt[22]);
+void set_values_gps();
+void int_latitude_longitude();
+char gps_furto();
 
 
 #endif /* GPS_H_ */

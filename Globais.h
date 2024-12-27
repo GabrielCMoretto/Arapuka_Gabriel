@@ -86,6 +86,7 @@ volatile char gps_lat[11];      //ddmm.mmmmm0
 volatile char gps_ns;           //(N/S) Latitude
 volatile char gps_long[12];     //dddmm.mmmmm0
 volatile char gps_ew;           //(E/W) Latitude
+volatile char gps_ew2;
 volatile char gps_gprmc[90];   //$GPRMC receber os dados para extrair parâmetros
 
 volatile char gps_fila[GPS_FILA_TAM];   //Espaço para a fila do GPS
@@ -100,6 +101,15 @@ volatile char numero_telefone = "+5521979592145";
 
 char serialMSG = TRUE;
 char estado = DMT;
-int ax, ay, az, tp, gx, gy, gz;
-int maiorx = 0, menorx = 0, maiory = 0, menory = 0, maiorz = 0, menorz = 0,roubado=0, alerta=0;
+int  ax, ay, az, tp, gx, gy, gz,maiorx = 0, menorx = 0, maiory = 0, menory = 0, maiorz = 0, menorz = 0,roubado=0, alerta=0;
+volatile int amaiorx, amenorx, amaiory, amenory, amaiorz, amenorz;
+volatile int maiorgx, menorgx, maiorgy, menorgy, maiorgz, menorgz;
 char vetor[14];
+volatile char toda_msg[70];
+long wr_address_mem;
+volatile char rtc_vetor[7];
+volatile char rtc_msg[18];
+volatile char gps_msg[22];
+float vol_lat, vol_long;
+volatile long int menorlatitude, maiorlatitude, menorlongitude, maiorlongitude;
+volatile long int lat, lataux, longt, longtaux;

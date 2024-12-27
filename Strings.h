@@ -28,6 +28,6 @@ char eh_dec(char letra);
 char asc_nib(char asc);
 long str_2_num(char *vt);
 void str_maiusc(char *vt);
-
+void IntToChar(int number, char *buffer);
 
 #endif /* STRINGS_H_ */

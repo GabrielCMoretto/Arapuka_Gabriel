@@ -134,5 +134,9 @@ void rtc_wr(char reg, char dado){
     while ( (UCB1CTL1 & UCTXSTP) == UCTXSTP);  //Esperar STOP
     i2c_tranca=FALSE;
 }
+void rtc_estado(){
+    rtc_rd_vet(0, rtc_vetor, 7);
+    str_data_hora(rtc_vetor,rtc_msg);
+}
 
 

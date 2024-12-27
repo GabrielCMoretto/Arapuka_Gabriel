@@ -65,8 +65,8 @@ int main(void){
         lcdb_str(1,1,"Puka:");
         ser1_str("\r\n==> Puka: ");
         //lcd_atualiza();
-        //modo=10;                    //<==Pular direto para um modo
-        modo=sel_modo();          //<==Selecionar modo
+        //modo=sel_modo();          //<==Selecionar modo
+        modo=1;                    //<==Pular direto para um modo
         ser1_char('[');
         ser1_dec8u(modo);
         ser1_char(']');

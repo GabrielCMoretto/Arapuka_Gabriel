@@ -208,5 +208,47 @@ void spi_config(void){
     P2OUT |= BIT6;              //P2.6 = High
     UCB0CTL1 = UCSSEL_2;        //Reset=0
 }
+//Salva na memoria, chamada por Suspeito, alerta 1 e 2
+//Salva o estado atual e todos os outros dados
+void salvar_memoria(){
+   unsigned int i=0, j=0;
+    char vetor[100];
+    long wr;
+
+    rtc_estado();
+    gps_estado_modo();
+    todos_dados(TRUE);
+
+    //coloca o estado atual no vetor que sera salvo na memoria
+    vetor[0]=estado;
+
+    while(toda_msg[j] != '\0'){
+        vetor[i] = toda_msg[j];
+        i++, j++;
+    }
+    vetor[i] = '\n', i++, vetor[i] = '\r', i++, vetor[i] = '\0';
 
 
+    i=0, wr = wr_address_mem;
+    while(vetor[i] != '\0'){
+        save_data(vetor[i], wr + i);
+        i++;
+    }
+    save_data(vetor[i], wr + i);  //salvar o caractere de '\0'
+    wr_address_mem+=128;
+}
+char save_data(char dt, int adr) {
+
+    char vt[10];
+    long wr_adr=0;  //Endere�o para as escritas
+    long rd_adr=0;  //Endere�o para as leituras
+    long er_adr=0;  //Endere�o para apagar
+
+    wr_adr =  adr;
+
+    rd_adr = adr;
+
+    vt[0] = dt;
+    wq_wr_blk(wr_adr, vt,1);
+    wq_rd_blk(rd_adr, vt,1);
+}

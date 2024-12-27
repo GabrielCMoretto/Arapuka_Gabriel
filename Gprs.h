@@ -16,6 +16,7 @@ char gprs_poe(char cha);
 void gprs_cheia(void);
 char gprs_tira(char *cha);
 void ser0_config(char br);
+void set_values_gps();
 
 
 #endif /* GPRS_H_ */

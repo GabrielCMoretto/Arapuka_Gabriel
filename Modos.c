@@ -795,46 +795,46 @@ void modo_ser1(char modo)
     ser1_dec8unz(modo);
 }
 //uma funcao que envia os dados do gps para o gprs que enviar pro celular
-void send_gps_gprs()
-{
-    char i, x, y;
-    char aux[2];
-    char menssagem[128];
-    gps_tranca = TRUE;        //Evitar que dados GPS sejam alterados
-    gps_gprmc_novo = FALSE;
-    for (i = 0; i < GPS_FILA_TAM; i++)
-    {
-        gps_fila[i] = 0;
-    }
-    gps_pin = 1;
-    gps_pout = 0;
-    strcpy(menssagem, "\nGPRMC:");
-    strcat(menssagem, " Hora=");
-    strcat(menssagem, gps_hora);
-    strcat(menssagem, " SAT=");
-    aux[0] = gps_sat;
-    aux[1] = '\0';
-    strcat(menssagem, aux);
-    strcat(menssagem, " Lat=");
-    strcat(menssagem, gps_lat);
-    strcat(menssagem, " NS=");
-    aux[0] = gps_ns;
-    aux[1] = '\0';
-    strcat(menssagem, aux);
-    strcat(menssagem, " Long=");
-    strcat(menssagem, gps_long);
-    strcat(menssagem, " EW=");
-    aux[0] = gps_ew;
-    aux[1] = '\0';
-    strcat(menssagem, aux);
-    strcat(menssagem, " Data=");
-    strcat(menssagem, gps_data);
-
-    ser1_str(menssagem);
-    ser1_crlf(1);
-
-    while (gps_tira(&x) == TRUE)
-        ;
-    gprs_send_msg(menssagem, y);
-    gps_tranca = FALSE;
-}
+//void send_gps_gprs()
+//{
+//    char i, x, y;
+//    char aux[2];
+//    char menssagem[128];
+//    gps_tranca = TRUE;        //Evitar que dados GPS sejam alterados
+//    gps_gprmc_novo = FALSE;
+//    for (i = 0; i < GPS_FILA_TAM; i++)
+//    {
+//        gps_fila[i] = 0;
+//    }
+//    gps_pin = 1;
+//    gps_pout = 0;
+//    strcpy(menssagem, "\nGPRMC:");
+//    strcat(menssagem, " Hora=");
+//    strcat(menssagem, gps_hora);
+//    strcat(menssagem, " SAT=");
+//    aux[0] = gps_sat;
+//    aux[1] = '\0';
+//    strcat(menssagem, aux);
+//    strcat(menssagem, " Lat=");
+//    strcat(menssagem, gps_lat);
+//    strcat(menssagem, " NS=");
+//    aux[0] = gps_ns;
+//    aux[1] = '\0';
+//    strcat(menssagem, aux);
+//    strcat(menssagem, " Long=");
+//    strcat(menssagem, gps_long);
+//    strcat(menssagem, " EW=");
+//    aux[0] = gps_ew;
+//    aux[1] = '\0';
+//    strcat(menssagem, aux);
+//    strcat(menssagem, " Data=");
+//    strcat(menssagem, gps_data);
+//
+//    ser1_str(menssagem);
+//    ser1_crlf(1);
+//
+//    while (gps_tira(&x) == TRUE)
+//        ;
+//    gprs_send_msg(menssagem, y);
+//    gps_tranca = FALSE;
+//}

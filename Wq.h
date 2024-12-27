@@ -38,6 +38,10 @@ void wq_cs(void);
 void wq_CS(void);
 char spi_transf(char x);
 void spi_config(void);
+void salvar_memoria();
+char save_data(char dt, int adr);
 
-
+extern volatile char toda_msg[70];
+extern long wr_address_mem;
+extern char estado;
 #endif /* WQ_H_ */

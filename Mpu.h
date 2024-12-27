@@ -15,12 +15,22 @@
 #define WHO_AM_I        0x75 //Registrador Who am I
 
 extern volatile char mpu_tem;      //TRUE se MPU6050 estiver presente
+extern int  ax, ay, az, tp, gx, gy, gz;
+extern volatile char toda_msg[70];
+extern volatile char rtc_msg[18];
+extern volatile char gps_msg[22];
+extern volatile int amaiorx, amenorx, amaiory, amenory, amaiorz, amenorz;
+extern volatile int maiorgx, menorgx, maiorgy, menorgy, maiorgz, menorgz;
 
 char mpu_config(void);
 void mpu_rd_vet(char reg, char *vt, char qtd);
 char mpu_rd(char reg);
 void mpu_wr(char reg, char dado);
-
-
+void mpu_values();
+void todos_dados(int mpu);
+void mpu_8bits();
+void repouso_values_mpu();
+char acel_furto();
+char giro_furto();
 
 #endif /* MPU_H_ */
