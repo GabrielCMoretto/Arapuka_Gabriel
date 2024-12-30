@@ -113,3 +113,9 @@ volatile char gps_msg[22];
 float vol_lat, vol_long;
 volatile long int menorlatitude, maiorlatitude, menorlongitude, maiorlongitude;
 volatile long int lat, lataux, longt, longtaux;
+//ultimo data e hora salva              Data e hora atualizada
+volatile int ultimo_vetor_data_hora[6], atual_vetor_data_hora[6]; //cada posição refere a cada dezena da data e hora vetor[0] = dia, vetor[1] = mes, vetor[2] = ano, vetor[3] = hora, vetor[4] = min, vetor[5] = seg
+//ultima data e hora que foi mandado a mensagem de roubo, referente a 1 hora
+volatile char rtc_ultima_data_hora_1_hora[18];
+//ultima data e hora que foi mandado a mensagem de roubo, referente a 1 min
+volatile char rtc_ultima_data_hora_1_min[18];

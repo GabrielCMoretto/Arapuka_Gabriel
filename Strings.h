@@ -29,5 +29,6 @@ char asc_nib(char asc);
 long str_2_num(char *vt);
 void str_maiusc(char *vt);
 void IntToChar(int number, char *buffer);
+int charToInt(char c);
 
 #endif /* STRINGS_H_ */

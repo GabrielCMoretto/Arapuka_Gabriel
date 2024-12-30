@@ -494,4 +494,7 @@ void IntToChar(int number, char *buffer){
     }
     buffer[y] = '\0'; // Termina a string com o caractere nulo
 }
+int charToInt(char c) {
+    return c - '0';
+}
 
