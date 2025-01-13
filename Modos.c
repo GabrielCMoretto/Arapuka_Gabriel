@@ -84,6 +84,7 @@ char modo_1(char modo)
     ser1_hex8(vt[1]);
     ser1_crlf(1);
 
+    gprs_config_receive(x);
     while (TRUE)
     {
         switch (estado)
@@ -105,7 +106,7 @@ char modo_1(char modo)
             alerta2();
         default:
         }
-
+        loopserial(x);
     }
     TA0CTL = 0;   //Parar o timer, desligar a serial do GPS
     return modo;
@@ -168,7 +169,7 @@ char modo_19(char modo)
         rec_msg(vet, 127);  //Esperar comando
         if (vet[0] != 0)
         {
-            gprs_send_msg(vet, x);
+            gprs_send_msg(vet,x);
             for (i = 0; i < 128; i++)
             {  //limpar o vetor para nao sobrar lixo
                 vet[i] = 0;

@@ -119,3 +119,5 @@ volatile int ultimo_vetor_data_hora[6], atual_vetor_data_hora[6]; //cada posição
 volatile char rtc_ultima_data_hora_1_hora[18];
 //ultima data e hora que foi mandado a mensagem de roubo, referente a 1 min
 volatile char rtc_ultima_data_hora_1_min[18];
+volatile int receiveiterator=0;
+volatile char receivestring[22]="+CMT: \"+5521979592145\"";
