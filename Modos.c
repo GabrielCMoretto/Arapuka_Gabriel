@@ -89,7 +89,6 @@ char modo_1(char modo)
     {
         switch (estado)
         {
-
         case DMT:
             dormente();
             break;

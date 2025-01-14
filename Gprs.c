@@ -70,12 +70,8 @@ void loopserial(char x)
     {
         if (checkreceive(x) == TRUE)
         {
-            while (gprs_tira(&x) == TRUE)
-            {
-                ser1_char(x);
-            }
             delay_10ms(100);
-            gprs_send_msg("mensagem recebida", x);
+            msg_handler(x);
             delay_10ms(100);
         }
         ser1_char(x);
@@ -116,7 +112,51 @@ void gprs_config_receive(char x)
         ser1_char(x);
     }
 }
+void msg_handler(char x)
+{
+    int cmd = FALSE;
+    while (gprs_tira(&x) == TRUE)
+    {
+        ser1_char(x);
+        if (cmd)
+        {
+            state_cod = x;
+            cmd = FALSE;
+            break;
+        }
+        if (x == 0x0A)
+        {
+            cmd = TRUE;
+        }
 
+    }
+
+    if (state_cod == 48)
+    {
+        estado = DMT;
+        serialMSG = FALSE;
+    }
+    if (state_cod == 49)
+    {
+        estado = VIG;
+        serialMSG = FALSE;
+    }
+    if (state_cod == 50)
+    {
+        estado = SUS;
+        serialMSG = FALSE;
+    }
+    if (state_cod == 51)
+    {
+        estado = ALT1;
+        serialMSG = FALSE;
+    }
+    if (state_cod == 52)
+    {
+        estado = ALT2;
+        serialMSG = FALSE;
+    }
+}
 ////////////////////////////////////////////////////
 ////////////////// Fila GPRS ///////////////////////
 ///////////// USCI_A0 <== GPRS /////////////////////

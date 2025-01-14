@@ -8,6 +8,9 @@ extern volatile char gprs_fila[GPRS_FILA_TAM]; //Espaço para a fila serial de en
 extern volatile int gprs_pin, gprs_pout;       //Ponteiros para usar a fila
 extern volatile int receiveiterator;
 extern volatile char receivestring[22];
+extern char estado;
+extern int state_cod;
+extern char serialMSG;
 
 void gprs_str(char *msg);
 void gprs_char(char x);
@@ -22,5 +25,6 @@ void set_values_gps();
 void loopserial(char x);
 char checkreceive(char x);
 void gprs_config_receive(char x);
+void msg_handler(char x);
 
 #endif /* GPRS_H_ */

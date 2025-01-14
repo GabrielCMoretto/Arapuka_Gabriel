@@ -121,3 +121,4 @@ volatile char rtc_ultima_data_hora_1_hora[18];
 volatile char rtc_ultima_data_hora_1_min[18];
 volatile int receiveiterator=0;
 volatile char receivestring[22]="+CMT: \"+5521979592145\"";
+int state_cod = 99;
