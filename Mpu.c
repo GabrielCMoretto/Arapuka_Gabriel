@@ -204,13 +204,14 @@ void todos_dados(int mpu)
     else{
         toda_msg[29] = '?';
     }
-    toda_msg[30] = '_';
+    toda_msg[30] = ' ';
 
     //longitude
     for (i = 31; i < 42; i++)
     {
         toda_msg[i] = gps_msg[i - 20];
     }
+    toda_msg[41] = '_';//ele deve ta copiando o /0 no final de gps msg
     toda_msg[42] = ',';
     if (gps_msg[11] == '+')
     {
@@ -224,7 +225,7 @@ void todos_dados(int mpu)
         toda_msg[43] = '?';
     }
     //receber caracter nulo na ultima posição
-    toda_msg[44] = '\0';
+    //toda_msg[44] = '\0';
 
     //salvar acelerometro e giroscopio
     //Precisa colocar o caractere de espaço na posição 44 e guardar os novos valores referentes ao MPU
