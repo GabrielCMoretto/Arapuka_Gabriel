@@ -106,7 +106,9 @@ void gprs_config_receive(char x)
     }
     delay_10ms(1);
     gprs_send_cmd("AT+CNMI=1,2,0,0,0", x);
-    delay_10ms(500);
+    delay_10ms(1);
+
+    gprs_send_cmd("AT+CMGD=1,4", x);
     while (gprs_tira(&x) == TRUE)
     {
         ser1_char(x);
@@ -133,28 +135,33 @@ void msg_handler(char x)
 
     if (state_cod == 48)
     {
+        gprs_send_msg("Arapuka mudou para o modo Dormente",x);
         estado = DMT;
-        serialMSG = FALSE;
+        serialMSG = TRUE;
     }
     if (state_cod == 49)
     {
+        gprs_send_msg("Arapuka mudou para o modo Vigilia",x);
         estado = VIG;
-        serialMSG = FALSE;
+        serialMSG = TRUE;
     }
     if (state_cod == 50)
     {
+        gprs_send_msg("Arapuka mudou para o modo Suspeito",x);
         estado = SUS;
-        serialMSG = FALSE;
+        serialMSG = TRUE;
     }
     if (state_cod == 51)
     {
+        gprs_send_msg("Arapuka mudou para o modo Alerta 1",x);
         estado = ALT1;
-        serialMSG = FALSE;
+        serialMSG = TRUE;
     }
     if (state_cod == 52)
     {
+        gprs_send_msg("Arapuka mudou para o modo Alerta 2",x);
         estado = ALT2;
-        serialMSG = FALSE;
+        serialMSG = TRUE;
     }
 }
 ////////////////////////////////////////////////////

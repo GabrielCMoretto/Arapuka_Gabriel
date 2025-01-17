@@ -201,7 +201,10 @@ void todos_dados(int mpu)
     {
         toda_msg[29] = 'S';
     }
-    toda_msg[30] = ' ';
+    else{
+        toda_msg[29] = '?';
+    }
+    toda_msg[30] = '_';
 
     //longitude
     for (i = 31; i < 42; i++)
@@ -216,6 +219,9 @@ void todos_dados(int mpu)
     else if (gps_msg[11] == '-')
     {
         toda_msg[43] = 'W';
+    }
+    else{
+        toda_msg[43] = '?';
     }
     //receber caracter nulo na ultima posição
     toda_msg[44] = '\0';

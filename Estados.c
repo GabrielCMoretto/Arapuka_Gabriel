@@ -14,8 +14,7 @@ void dormente()
         serialMSG = FALSE;
         delay_10ms(50);
     }
-    estado = VIG;
-    serialMSG = TRUE;
+
 }
 void vigilia()
 {
@@ -39,7 +38,7 @@ void vigilia()
     }
 
 }
-void suspeito()
+void suspeito(char x)
 {
     if (serialMSG)
     {
@@ -52,7 +51,7 @@ void suspeito()
 
         gps_estado_modo();
         todos_dados(TRUE);
-        //gprs_complete_str(toda_msg);
+        gprs_send_msg(toda_msg,x);
 
         rtc_estado();
         atualiza_data_hora(FALSE, TRUE);    //Só preciso atualizar a ultima hora
@@ -66,14 +65,14 @@ void suspeito()
         atualiza_data_hora(FALSE, TRUE); //Só preciso atualizar a ultima hora
         gps_estado_modo();
         todos_dados(TRUE);
-        //gprs_complete_str(toda_msg);
+        gprs_send_msg(toda_msg,x);
 
         //SALVA NA MEMORIA
         salvar_memoria();
     }
 
 }
-void alerta1()
+void alerta1(char x)
 {
     if (serialMSG)
     {
@@ -86,7 +85,7 @@ void alerta1()
 
         gps_estado_modo();
         todos_dados(TRUE);
-        //gprs_complete_str(toda_msg);
+        gprs_send_msg(toda_msg,x);
 
         rtc_estado();
         atualiza_data_hora(FALSE, TRUE);    //Só preciso atualizar a ultima hora
@@ -99,14 +98,14 @@ void alerta1()
         atualiza_data_hora(FALSE, TRUE); //Só preciso atualizar a ultima hora
         gps_estado_modo();
         todos_dados(TRUE);
-        //gprs_complete_str(toda_msg);
+        gprs_send_msg(toda_msg,x);
 
         //SALVA NA MEMORIA
         salvar_memoria();
     }
 
 }
-void alerta2()
+void alerta2(char x)
 {
     if (serialMSG)
     {
@@ -118,7 +117,7 @@ void alerta2()
 
         gps_estado_modo();
         todos_dados(TRUE);
-        //gprs_complete_str(toda_msg);
+        gprs_send_msg(toda_msg,x);
 
         rtc_estado();
         atualiza_data_hora(TRUE, TRUE);     //Só preciso atualizar a ultima hora
@@ -130,7 +129,7 @@ void alerta2()
 
         gps_estado_modo();
         todos_dados(TRUE);
-        //gprs_complete_str(toda_msg);
+        gprs_send_msg(toda_msg,x);
     }
 
     if (passou_1_hora() == TRUE)
@@ -138,7 +137,7 @@ void alerta2()
         atualiza_data_hora(FALSE, TRUE); //Só preciso atualizar a ultima hora
         gps_estado_modo();
         todos_dados(TRUE);
-        //gprs_complete_str(toda_msg);
+        gprs_send_msg(toda_msg,x);
 
         //SALVA NA MEMORIA
         salvar_memoria();

@@ -105,7 +105,6 @@ void rtc_rd_vet(char reg, char *vt, char qtd)
         ;   //Esperar STOP
     i2c_tranca = FALSE;
 }
-
 // Ler um registrador do RTC
 char rtc_rd(char reg)
 {

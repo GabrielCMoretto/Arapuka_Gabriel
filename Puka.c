@@ -17,6 +17,12 @@ char sel_modo(void);
 int main(void){
     unsigned int cont=0;
 	WDTCTL = WDTPW | WDTHOLD;	// stop watchdog timer
+
+	//liga perifericos
+	P8DIR |= BIT2;
+	P8OUT &= ~BIT2;
+	P8OUT |= BIT2;
+
     clk_20mhz();
     crono_inic();           //Inicializar cronômetro
     crono_zera();           //Zerar cronômetro
@@ -24,6 +30,7 @@ int main(void){
     __enable_interrupt();
     gpio_config();
     ser1_config(BR_115200);
+    //ser0_config(BR_115200);
     seri_config();          //Configurar fila de entrada
     spi_config();
 
@@ -57,7 +64,7 @@ int main(void){
     //delay_10ms(100);
     mpu_config();
     if (mpu_tem==FALSE) ser1_str("\nSem MPU!");
-    //delay_10ms(100);
+    delay_10ms(100);
 
     // Laço principal
     while(TRUE){
@@ -65,8 +72,8 @@ int main(void){
         lcdb_str(1,1,"Puka:");
         ser1_str("\r\n==> Puka: ");
         //lcd_atualiza();
-        modo=sel_modo();          //<==Selecionar modo
-        //modo=1;                    //<==Pular direto para um modo
+        //modo=sel_modo();          //<==Selecionar modo
+        modo=1;                    //<==Pular direto para um modo
         ser1_char('[');
         ser1_dec8u(modo);
         ser1_char(']');

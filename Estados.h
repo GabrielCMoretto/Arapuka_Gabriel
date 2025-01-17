@@ -9,7 +9,7 @@ extern char vetor[14];
 
 void dormente ();
 void vigilia ();
-void suspeito ();
-void alerta1 ();
-void alerta2 ();
+void suspeito (char x);
+void alerta1 (char x);
+void alerta2 (char x);
 #endif
