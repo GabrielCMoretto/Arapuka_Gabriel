@@ -16,49 +16,8 @@
 // 1 -Operacao
 char modo_1(char modo)
 {
-    char x;
-
-    x = i2c_teste_adr(MPU_ADR);
-    if (x == TRUE)
-        ser1_str(" MPU OK");
-    else
-    {
-        ser1_str(" MPU NOK");
-        return modo;
-    }
-    ser1_crlf(1);
-
-    mpu_rd_vet(ACCEL_XOUT_H, vetor, 14);    //Ler 14 regs
-    ax = vetor[0];
-    ax = (ax << 8) + vetor[1];
-    ay = vetor[2];
-    ay = (ay << 8) + vetor[3];
-    az = vetor[4];
-    az = (az << 8) + vetor[5];
-    tp = vetor[6];
-    tp = (tp << 8) + vetor[7];
-    gx = vetor[8];
-    gx = (gx << 8) + vetor[9];
-    gy = vetor[10];
-    gy = (gy << 8) + vetor[11];
-    gz = vetor[12];
-    gz = (gz << 8) + vetor[13];
-
-    //Variaveis: X- 136 , Y- 88 , Z - 17
-    maiorx = gx + 136;
-    menorx = gx - 136;
-
-    maiory = gy + 88;
-    menory = gy - 88;
-
-    maiorz = gz + 17;
-    menorz = gz - 17;
-
-    char letra = 0, base = 0;
-    char lin, col;
-    char qtd, argc[4], argv[10];
     modo_ser1(modo);
-    char i, j, y;
+    char x;
     ser1_str(" Puka-Operacao \n");
     lcdb_str(1, 1, "Opera");
     led_vm();
@@ -68,46 +27,15 @@ char modo_1(char modo)
     gprs_config();  //Inicializar fila que recebe do SIM800L
     //gps_config(); //esse gps fica com a fila cheia o tempo todo
 
-    char vt[16];
-    long wr_adr = 0;  //Endereço para as escritas
-    long rd_adr = 0;  //Endereço para as leituras
-    long er_adr = 0;  //Endereço para apagar
-    y = wq_sr1_rd();
-    ser1_hex8(y);
-    y = wq_sr2_rd();
-    ser1_hex8(y);
-
-    ser1_crlf(1);
-    w25_manuf_dev_id(vt);
-    ser1_hex8(vt[0]);
-    ser1_spc(1);
-    ser1_hex8(vt[1]);
-    ser1_crlf(1);
-
     gprs_config_receive(x);
-    delay_10ms(1);
-    gprs_send_msg("Arapuka foi iniciada no modo Dormente", x);
-    while (TRUE)
-    {
-        switch (estado)
-        {
-        case DMT:
-            dormente();
-            break;
-        case VIG:
-            vigilia();
-            break;
-        case SUS:
-            suspeito(x);
-            break;
-        case ALT1:
-            alerta1(x);
-            break;
-        case ALT2:
-            alerta2(x);
-        default:
-        }
-        loopserial(x);
+
+    estados_config();
+
+    while (gprs_tira(&x) == TRUE);
+
+
+    while(TRUE){
+        check_estado_address();
     }
     TA0CTL = 0;   //Parar o timer, desligar a serial do GPS
     return modo;
@@ -170,7 +98,7 @@ char modo_19(char modo)
         rec_msg(vet, 127);  //Esperar comando
         if (vet[0] != 0)
         {
-            gprs_send_msg(vet,x);
+            gprs_send_msg(vet);
             for (i = 0; i < 128; i++)
             {  //limpar o vetor para nao sobrar lixo
                 vet[i] = 0;
@@ -251,7 +179,7 @@ char modo_sw(char modo)
         else
             lcdb_char(2, 12, 'F');
 
-        // SW1
+// SW1
         if (sw1 == TRUE)
         {
             sw1 = FALSE;
@@ -261,7 +189,7 @@ char modo_sw(char modo)
             ser1_crlf(1);
         }
 
-        //SW2
+//SW2
         if (sw2 == TRUE)
         {
             sw2 = FALSE;
@@ -446,8 +374,8 @@ char modo_rtc(char modo)
         ser1_crlf(1);
         lcdb_data(1, 9, vetor);
         lcdb_hora(2, 9, vetor);
-        //ser1_hex8(x);
-        //ser1_crlf(1);
+//ser1_hex8(x);
+//ser1_crlf(1);
         delay_10ms(100);
     }
     return modo;
@@ -489,7 +417,7 @@ char modo_wq(char modo)
         if (argv[0] == 'x' || argv[0] == 'X')
             return modo;
 
-        //Leitura 256 bytes da Flash
+//Leitura 256 bytes da Flash
         if (argv[0] == 'r' || argv[0] == 'R')
         {
             if (qtd > 1)
@@ -513,7 +441,7 @@ char modo_wq(char modo)
             ser1_crlf(1);
         }
 
-        // WR - Escrita de um padrão de 256 bytes, opera em blocos de 16 bytes
+// WR - Escrita de um padrão de 256 bytes, opera em blocos de 16 bytes
         if (argv[0] == 'w' || argv[0] == 'W')
         {
             if (qtd > 1)
@@ -538,7 +466,7 @@ char modo_wq(char modo)
             ser1_crlf(1);
         }
 
-        // Erase - Apagar página de 4 KB (adr = aaaa aaaa   aaaa 0000   0000 0000)
+// Erase - Apagar página de 4 KB (adr = aaaa aaaa   aaaa 0000   0000 0000)
         if (argv[0] == 'e' || argv[0] == 'E')
         {
             if (qtd > 1)
