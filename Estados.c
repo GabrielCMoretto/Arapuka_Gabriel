@@ -51,7 +51,7 @@ void suspeito(char x)
 
         gps_estado_modo();
         todos_dados(TRUE);
-        gprs_send_msg(toda_msg,x);
+        gprs_send_msg(toda_msg);
 
         rtc_estado();
         atualiza_data_hora(FALSE, TRUE);    //Só preciso atualizar a ultima hora
@@ -65,7 +65,7 @@ void suspeito(char x)
         atualiza_data_hora(FALSE, TRUE); //Só preciso atualizar a ultima hora
         gps_estado_modo();
         todos_dados(TRUE);
-        gprs_send_msg(toda_msg,x);
+        gprs_send_msg(toda_msg);
 
         //SALVA NA MEMORIA
         salvar_memoria();
@@ -85,7 +85,7 @@ void alerta1(char x)
 
         gps_estado_modo();
         todos_dados(TRUE);
-        gprs_send_msg(toda_msg,x);
+        gprs_send_msg(toda_msg);
 
         rtc_estado();
         atualiza_data_hora(FALSE, TRUE);    //Só preciso atualizar a ultima hora
@@ -98,7 +98,7 @@ void alerta1(char x)
         atualiza_data_hora(FALSE, TRUE); //Só preciso atualizar a ultima hora
         gps_estado_modo();
         todos_dados(TRUE);
-        gprs_send_msg(toda_msg,x);
+        gprs_send_msg(toda_msg);
 
         //SALVA NA MEMORIA
         salvar_memoria();
@@ -117,7 +117,7 @@ void alerta2(char x)
 
         gps_estado_modo();
         todos_dados(TRUE);
-        gprs_send_msg(toda_msg,x);
+        gprs_send_msg(toda_msg);
 
         rtc_estado();
         atualiza_data_hora(TRUE, TRUE);     //Só preciso atualizar a ultima hora
@@ -129,7 +129,7 @@ void alerta2(char x)
 
         gps_estado_modo();
         todos_dados(TRUE);
-        gprs_send_msg(toda_msg,x);
+        gprs_send_msg(toda_msg);
     }
 
     if (passou_1_hora() == TRUE)
@@ -137,7 +137,7 @@ void alerta2(char x)
         atualiza_data_hora(FALSE, TRUE); //Só preciso atualizar a ultima hora
         gps_estado_modo();
         todos_dados(TRUE);
-        gprs_send_msg(toda_msg,x);
+        gprs_send_msg(toda_msg);
 
         //SALVA NA MEMORIA
         salvar_memoria();

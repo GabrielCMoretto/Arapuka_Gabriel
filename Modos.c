@@ -17,48 +17,7 @@
 char modo_1(char modo)
 {
     char x;
-
-    x = i2c_teste_adr(MPU_ADR);
-    if (x == TRUE)
-        ser1_str(" MPU OK");
-    else
-    {
-        ser1_str(" MPU NOK");
-        return modo;
-    }
-    ser1_crlf(1);
-
-    mpu_rd_vet(ACCEL_XOUT_H, vetor, 14);    //Ler 14 regs
-    ax = vetor[0];
-    ax = (ax << 8) + vetor[1];
-    ay = vetor[2];
-    ay = (ay << 8) + vetor[3];
-    az = vetor[4];
-    az = (az << 8) + vetor[5];
-    tp = vetor[6];
-    tp = (tp << 8) + vetor[7];
-    gx = vetor[8];
-    gx = (gx << 8) + vetor[9];
-    gy = vetor[10];
-    gy = (gy << 8) + vetor[11];
-    gz = vetor[12];
-    gz = (gz << 8) + vetor[13];
-
-    //Variaveis: X- 136 , Y- 88 , Z - 17
-    maiorx = gx + 136;
-    menorx = gx - 136;
-
-    maiory = gy + 88;
-    menory = gy - 88;
-
-    maiorz = gz + 17;
-    menorz = gz - 17;
-
-    char letra = 0, base = 0;
-    char lin, col;
-    char qtd, argc[4], argv[10];
     modo_ser1(modo);
-    char i, j, y;
     ser1_str(" Puka-Operacao \n");
     lcdb_str(1, 1, "Opera");
     led_vm();
@@ -67,26 +26,56 @@ char modo_1(char modo)
     seri_config();  //Inicializar fila que recebe do PC
     gprs_config();  //Inicializar fila que recebe do SIM800L
     //gps_config(); //esse gps fica com a fila cheia o tempo todo
-
-    char vt[16];
-    long wr_adr = 0;  //Endereço para as escritas
-    long rd_adr = 0;  //Endereço para as leituras
-    long er_adr = 0;  //Endereço para apagar
-    y = wq_sr1_rd();
-    ser1_hex8(y);
-    y = wq_sr2_rd();
-    ser1_hex8(y);
-
-    ser1_crlf(1);
-    w25_manuf_dev_id(vt);
-    ser1_hex8(vt[0]);
-    ser1_spc(1);
-    ser1_hex8(vt[1]);
-    ser1_crlf(1);
-
     gprs_config_receive(x);
     delay_10ms(1);
-    gprs_send_msg("Arapuka foi iniciada no modo Dormente", x);
+
+    unsigned int i;
+    long address = 0;
+    char vetor[5]; //tamanho necessario
+
+    //che
+    while (TRUE)
+    {
+        wq_rd_blk(address, vetor, 5);         //ler apenas as primeiras posi��es
+        if (vetor[0] < ' ' || vetor[0] > 'z')
+            break;    //significa que n�o tem mais registro
+        address += 128;
+    }
+
+    wr_address_mem = address;
+
+    //se tiver apenas o primeiro registro, vai d� ruim. Esse IF evita da erro
+    if (address >= 128)
+        address -= 128;
+
+    wq_rd_blk(address, vetor, 5);
+
+    if (vetor[0] > 47 && vetor[0]<53)
+    {
+        estado = vetor[0]-46;
+    }
+    else
+    {
+        estado = DMT;
+    }
+    switch (estado)
+    {
+    case DMT:
+        gprs_send_msg("Arapuka foi iniciada no modo Dormente");
+        break;
+    case VIG:
+        gprs_send_msg("Arapuka foi iniciada no modo Vigilia");
+        break;
+    case SUS:
+        gprs_send_msg("Arapuka foi iniciada no modo Suspeito");
+        break;
+    case ALT1:
+        gprs_send_msg("Arapuka foi iniciada no modo Alerta 1");
+        break;
+    case ALT2:
+        gprs_send_msg("Arapuka foi iniciada no modo Alerta 2");
+    default:
+    }
     while (TRUE)
     {
         switch (estado)
@@ -170,7 +159,7 @@ char modo_19(char modo)
         rec_msg(vet, 127);  //Esperar comando
         if (vet[0] != 0)
         {
-            gprs_send_msg(vet,x);
+            gprs_send_msg(vet);
             for (i = 0; i < 128; i++)
             {  //limpar o vetor para nao sobrar lixo
                 vet[i] = 0;

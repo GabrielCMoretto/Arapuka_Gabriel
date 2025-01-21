@@ -27,7 +27,7 @@ void gprs_char(char x)
         ;
 }
 // comando que envia um comando pro gprs
-void gprs_send_cmd(char *vet, char x)
+void gprs_send_cmd(char *vet)
 {
     //ser1_str("\n[");
     //ser1_str(vet);
@@ -43,11 +43,12 @@ void gprs_send_cmd(char *vet, char x)
     //}
 }
 // comando que envia menssagem para um celular
-void gprs_send_msg(char *vet, char x)
+void gprs_send_msg(char *vet)
 {
+    char x;
     gprs_config();
-    gprs_send_cmd("AT+CMGF=1", x);
-    gprs_send_cmd("AT+CMGS=\"+5521979592145\"", x);
+    gprs_send_cmd("AT+CMGF=1");
+    gprs_send_cmd("AT+CMGS=\"+5521979592145\"");
     gprs_str(vet);
     delay_10ms(1);
     gprs_char(0x0A);
@@ -64,8 +65,9 @@ void gprs_send_msg(char *vet, char x)
 
 }
 //loop que coloca no serial oque chega do gprs
-void loopserial(char x)
+void loopserial()
 {
+    char x;
     while (gprs_tira(&x) == TRUE)
     {
         if (checkreceive(x) == TRUE)
@@ -99,16 +101,16 @@ char checkreceive(char x)
 //manda os comandos que servem para configurar o serial para mostrar as mensagens que chega no gprs
 void gprs_config_receive(char x)
 {
-    gprs_send_cmd("AT+CMGF=1", x);
+    gprs_send_cmd("AT+CMGF=1");
     while (gprs_tira(&x) == TRUE)
     {
         ser1_char(x);
     }
     delay_10ms(1);
-    gprs_send_cmd("AT+CNMI=1,2,0,0,0", x);
+    gprs_send_cmd("AT+CNMI=1,2,0,0,0");
     delay_10ms(1);
 
-    gprs_send_cmd("AT+CMGD=1,4", x);
+    gprs_send_cmd("AT+CMGD=1,4");
     while (gprs_tira(&x) == TRUE)
     {
         ser1_char(x);
@@ -135,31 +137,31 @@ void msg_handler(char x)
 
     if (state_cod == 48)
     {
-        gprs_send_msg("Arapuka mudou para o modo Dormente",x);
+        gprs_send_msg("Arapuka mudou para o modo Dormente");
         estado = DMT;
         serialMSG = TRUE;
     }
     if (state_cod == 49)
     {
-        gprs_send_msg("Arapuka mudou para o modo Vigilia",x);
+        gprs_send_msg("Arapuka mudou para o modo Vigilia");
         estado = VIG;
         serialMSG = TRUE;
     }
     if (state_cod == 50)
     {
-        gprs_send_msg("Arapuka mudou para o modo Suspeito",x);
+        gprs_send_msg("Arapuka mudou para o modo Suspeito");
         estado = SUS;
         serialMSG = TRUE;
     }
     if (state_cod == 51)
     {
-        gprs_send_msg("Arapuka mudou para o modo Alerta 1",x);
+        gprs_send_msg("Arapuka mudou para o modo Alerta 1");
         estado = ALT1;
         serialMSG = TRUE;
     }
     if (state_cod == 52)
     {
-        gprs_send_msg("Arapuka mudou para o modo Alerta 2",x);
+        gprs_send_msg("Arapuka mudou para o modo Alerta 2");
         estado = ALT2;
         serialMSG = TRUE;
     }

@@ -100,7 +100,7 @@ volatile char numero_telefone = "+5521979592145";
 ////////////////////////////////////////////////////////////
 
 char serialMSG = TRUE;
-char estado = DMT;
+char estado;
 int  ax, ay, az, tp, gx, gy, gz,maiorx = 0, menorx = 0, maiory = 0, menory = 0, maiorz = 0, menorz = 0,roubado=0, alerta=0;
 volatile int amaiorx, amenorx, amaiory, amenory, amaiorz, amenorz;
 volatile int maiorgx, menorgx, maiorgy, menorgy, maiorgz, menorgz;

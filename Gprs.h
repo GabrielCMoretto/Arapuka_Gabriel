@@ -14,15 +14,15 @@ extern char serialMSG;
 
 void gprs_str(char *msg);
 void gprs_char(char x);
-void gprs_send_cmd(char *msg,char x);
-void gprs_send_msg(char *msg,char x);
+void gprs_send_cmd(char *msg);
+void gprs_send_msg(char *msg);
 void gprs_config(void);
 char gprs_poe(char cha);
 void gprs_cheia(void);
 char gprs_tira(char *cha);
 void ser0_config(char br);
 void set_values_gps();
-void loopserial(char x);
+void loopserial();
 char checkreceive(char x);
 void gprs_config_receive(char x);
 void msg_handler(char x);
