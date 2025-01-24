@@ -21,7 +21,7 @@
 #include "Wq.h"
 
 // Escrever um bloco na WQ
-// Deve estar dentro de uma página de 256 bytes
+// Deve estar dentro de uma pÃ¡gina de 256 bytes
 // Ao terminar WEL=0
 void wq_wr_blk(long adr, char *vet, int qtd)
 {
@@ -31,18 +31,20 @@ void wq_wr_blk(long adr, char *vet, int qtd)
     wq_WEL();
     wq_cs();   //Selecionar SRAM
     spi_transf(WQ_PAGE_PROG);
-    spi_transf(adr >> 16);
-    spi_transf(adr >> 8);
-    spi_transf(adr);
+    spi_transf((adr >> 16) & 0xFF);
+    spi_transf((adr >> 8) & 0xFF);
+    spi_transf(adr & 0xFF);
     for (i = 0; i < qtd; i++)
     {
         spi_transf(vet[i]);
     }
     wq_CS();      //De-selecionar Flash
     wq_wel();
+    while (wq_ocupado())
+        ;
 }
 
-// Ler uma certa quantidade de posições
+// Ler uma certa quantidade de posiÃ§Ãµes
 void wq_rd_blk(long adr, char *vet, int qtd)
 {
     long i;
@@ -62,9 +64,10 @@ void wq_rd_blk(long adr, char *vet, int qtd)
         //ser_crlf(1);
     }
     wq_CS();      //De-selecionar Flash
+
 }
 
-// Apagar toda a memória - Demora!
+// Apagar toda a memÃ³ria - Demora!
 void wq_erase_chip(void)
 {
     int i = 0;
@@ -88,7 +91,7 @@ void wq_erase_chip(void)
 }
 
 // Apagar (0xFF) um bloco de 64KB
-// Endereço = aaaa aaaa   0000 0000   0000 0000 (24 bits)
+// EndereÃ§o = aaaa aaaa   0000 0000   0000 0000 (24 bits)
 void wq_erase_64k(long adr)
 {
     adr &= 0xFF0000L;        //Ficar dentro pag de 64KB
@@ -107,7 +110,7 @@ void wq_erase_64k(long adr)
 }
 
 // Apagar (0xFF) um setor de 4 KB
-// Endereço = aaaa aaaa   aaaa 0000   0000 0000 (24 bits)
+// EndereÃ§o = aaaa aaaa   aaaa 0000   0000 0000 (24 bits)
 // 4095 setores de 4 KB
 // Ao terminar WEL=0 automaticamente
 void wq_erase_4k(long adr)
@@ -127,7 +130,7 @@ void wq_erase_4k(long adr)
     }
 }
 
-// WQ está ocupado?
+// WQ estÃ¡ ocupado?
 // Ocupado=TRUE Livre=FALSE
 char wq_ocupado(void)
 {
@@ -211,9 +214,10 @@ void wq_CS(void)
 char spi_transf(char x)
 {
     UCB0IFG &= ~UCRXIFG;   //Zerar Esperar receber
-    UCB0TXBUF = x;
+
     while ((UCB0IFG & UCTXIFG) == 0)
         ;   //Esperar transmitir
+    UCB0TXBUF = x;
     while ((UCB0IFG & UCRXIFG) == 0)
         ;   //Esperar receber
     return UCB0RXBUF;
@@ -223,8 +227,8 @@ char spi_transf(char x)
 void spi_config(void)
 {
     UCB0CTL1 = UCSSEL_2 | UCSWRST;  //Reset=1
-    //UCB0CTL0 = UCCKPL | UCCKPH | UCMSB | UCMST | UCSYNC;  //==>Não funciona
-    //UCB0CTL0 = UCMSB | UCMST | UCSYNC;                    //=>Não funciona
+    //UCB0CTL0 = UCCKPL | UCCKPH | UCMSB | UCMST | UCSYNC;  //==>NÃ£o funciona
+    //UCB0CTL0 = UCMSB | UCMST | UCSYNC;                    //=>NÃ£o funciona
     UCB0CTL0 = UCCKPL | UCMSB | UCMST | UCSYNC;           //==>OK
     //UCB0CTL0 = UCCKPH | UCMSB | UCMST | UCSYNC;           //==>OK
     UCB0BRW = SMCLK / 500000L;    //CLK=400kHz (20Mhz/500k = 400)
@@ -240,10 +244,10 @@ void salvar_memoria()
 {
     unsigned int i = 0, j = 0;
     char vetor[100];
-    long wr;
+    volatile long wr = wr_address_mem;
     char estado_puka[5];
-    estado_puka[0]=estado;
-    estado_puka[1]='\0';
+    estado_puka[0] = estado + '0';
+    estado_puka[1] = '\0';
 
     rtc_estado();
     gps_estado_modo();
@@ -263,28 +267,21 @@ void salvar_memoria()
     }
     vetor[i] = '\n', i++, vetor[i] = '\r', i++, vetor[i] = '\0';
 
-    i = 0, wr = wr_address_mem;
-    while (vetor[i] != '\0')
-    {
-        save_data(vetor[i], wr + i);
-        i++;
-    }
-    save_data(vetor[i], wr + i);  //salvar o caractere de '\0'
+    wr = wr_address_mem;
+
+    wq_wr_blk(wr, vetor, i);
+
     wr_address_mem += 128;
+
+    save_estado();
 }
-char save_data(char dt, int adr)
+
+flash_save(uint32_t adress, uint8_t *data, uint16_t size)
 {
-
-    char vt[10];
-    long wr_adr = 0;  //Endereï¿½o para as escritas
-    long rd_adr = 0;  //Endereï¿½o para as leituras
-    long er_adr = 0;  //Endereï¿½o para apagar
-
-    wr_adr = adr;
-
-    rd_adr = adr;
-
-    vt[0] = dt;
-    wq_wr_blk(wr_adr, vt, 1);
-    wq_rd_blk(rd_adr, vt, 1);
+    uint32_t i;
+    for (i = 0; i < size; i++)
+    {
+        save_data(data[i], adress + i);
+    }
 }
+

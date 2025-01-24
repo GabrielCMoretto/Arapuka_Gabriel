@@ -3,6 +3,8 @@
 #ifndef WQ_H_
 #define WQ_H_
 
+#include <stdint.h>
+
 // Constantes para a W25Q32
 #define WQ_WEL_SET       0x06  //Fazer WEL=1 Write Enable
 #define WQ_WEL_RST       0x04  //Fazer WEL=0 Write Disable
@@ -39,9 +41,11 @@ void wq_CS(void);
 char spi_transf(char x);
 void spi_config(void);
 void salvar_memoria();
-char save_data(char dt, int adr);
+char save_data(char dt, long adr);
+
+flash_save(uint32_t adress, uint8_t* data, uint16_t size);
 
 extern volatile char toda_msg[70];
-extern long wr_address_mem;
+extern volatile long wr_address_mem;
 extern char estado;
 #endif /* WQ_H_ */

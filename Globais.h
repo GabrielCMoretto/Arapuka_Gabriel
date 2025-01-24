@@ -106,7 +106,7 @@ volatile int amaiorx, amenorx, amaiory, amenory, amaiorz, amenorz;
 volatile int maiorgx, menorgx, maiorgy, menorgy, maiorgz, menorgz;
 char vetor[14];
 volatile char toda_msg[70];
-long wr_address_mem;
+volatile long wr_address_mem;
 volatile char rtc_vetor[7];
 volatile char rtc_msg[18];
 volatile char gps_msg[22];

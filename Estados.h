@@ -12,4 +12,6 @@ void vigilia ();
 void suspeito (char x);
 void alerta1 (char x);
 void alerta2 (char x);
+void carregar_estado();
+void save_estado();
 #endif

@@ -28,36 +28,7 @@ char modo_1(char modo)
     //gps_config(); //esse gps fica com a fila cheia o tempo todo
     gprs_config_receive(x);
     delay_10ms(1);
-
-    unsigned int i;
-    long address = 0;
-    char vetor[5]; //tamanho necessario
-
-    //che
-    while (TRUE)
-    {
-        wq_rd_blk(address, vetor, 5);         //ler apenas as primeiras posi��es
-        if (vetor[0] < ' ' || vetor[0] > 'z')
-            break;    //significa que n�o tem mais registro
-        address += 128;
-    }
-
-    wr_address_mem = address;
-
-    //se tiver apenas o primeiro registro, vai d� ruim. Esse IF evita da erro
-    if (address >= 128)
-        address -= 128;
-
-    wq_rd_blk(address, vetor, 5);
-
-    if (vetor[0] > 47 && vetor[0]<53)
-    {
-        estado = vetor[0]-46;
-    }
-    else
-    {
-        estado = DMT;
-    }
+    carregar_estado();
     switch (estado)
     {
     case DMT:
