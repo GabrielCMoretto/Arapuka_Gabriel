@@ -80,7 +80,7 @@ int main(void)
         ser1_str("\r\n==> Puka: ");
         //lcd_atualiza();
         //modo=sel_modo();          //<==Selecionar modo
-        modo = 15;                    //<==Pular direto para um modo
+        modo = 1;                    //<==Pular direto para um modo
         ser1_char('[');
         ser1_dec8u(modo);
         ser1_char(']');

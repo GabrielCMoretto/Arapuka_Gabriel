@@ -29,6 +29,7 @@ char modo_1(char modo)
     gprs_config_receive(x);
     delay_10ms(1);
     carregar_estado();
+    delay_seg(7);
     switch (estado)
     {
     case DMT:

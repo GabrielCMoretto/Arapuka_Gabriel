@@ -60,7 +60,7 @@ void gprs_send_msg(char *vet)
 
     while (gprs_tira(&x) == TRUE)
     {
-        ser1_char(x);
+        //ser1_char(x);
     }
 
 }
@@ -76,7 +76,7 @@ void loopserial()
             msg_handler(x);
             delay_10ms(100);
         }
-        ser1_char(x);
+        //ser1_char(x);
     }
 }
 //ve se recebeu menssagem baseado no formato de mensagem que ele le do serial
@@ -102,18 +102,22 @@ char checkreceive(char x)
 void gprs_config_receive(char x)
 {
     gprs_send_cmd("AT+CMGF=1");
-    while (gprs_tira(&x) == TRUE)
-    {
-        ser1_char(x);
-    }
+    //while (gprs_tira(&x) == TRUE)
+    //{
+        //ser1_char(x);
+    //}
     delay_10ms(1);
     gprs_send_cmd("AT+CNMI=1,2,0,0,0");
     delay_10ms(1);
 
     gprs_send_cmd("AT+CMGD=1,4");
+
+    gprs_send_cmd("AT+CMGDA=\"DEL ALL\"");
+
+    gprs_send_cmd("AT+CSMP=17,167,0,0");
     while (gprs_tira(&x) == TRUE)
     {
-        ser1_char(x);
+        //ser1_char(x);
     }
 }
 void msg_handler(char x)
@@ -121,7 +125,7 @@ void msg_handler(char x)
     int cmd = FALSE;
     while (gprs_tira(&x) == TRUE)
     {
-        ser1_char(x);
+        //ser1_char(x);
         if (cmd)
         {
             state_cod = x;

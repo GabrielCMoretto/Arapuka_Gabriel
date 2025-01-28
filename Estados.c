@@ -13,6 +13,7 @@ void dormente()
         lcdb_apaga();
         lcdb_str(1, 1, "Opera:Dormente");
         serialMSG = FALSE;
+        salvar_memoria();
         delay_10ms(50);
     }
 
